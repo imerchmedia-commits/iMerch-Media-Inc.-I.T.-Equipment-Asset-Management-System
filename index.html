@@ -141,10 +141,10 @@
   <header class="sticky top-0 z-30 glass-panel border-x-0 border-t-0 rounded-none">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3">
       <div class="flex items-center gap-3 min-w-0">
-        <!-- Theme-aware iMerch Logo (Light = imerchlogo.jpg, Dark = imerchlogowhite1.jpg) -->
+        <!-- Theme-aware iMerch Logo (Light = imerchlogo.png, Dark = imerchlogowhite1.png) -->
         <img
           id="headerBrandLogo"
-          src="imerchlogowhite1.jpg"
+          src="imerchlogowhite1.png"
           alt="iMerch Media Inc."
           class="h-8 sm:h-9 w-auto object-contain shrink-0"
         />
@@ -568,10 +568,10 @@
       <div id="arPrintableSheet" class="bg-white text-slate-900 rounded-xl shadow-2xl p-6 sm:p-10 border border-slate-300">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b-2 border-slate-900 pb-4 gap-4">
           <div class="flex items-center gap-3.5">
-            <!-- Theme-aware AR Logo (Light = imerchlogoblack.jpg, Dark = imerchlogowhite1.jpg) -->
+            <!-- Theme-aware AR Logo (Light = imerchlogo.png, Dark = imerchlogowhite1.png) -->
             <img
               id="arBrandLogo"
-              src="imerchlogoblack.jpg"
+              src="imerchlogo.png"
               alt="iMerch Media Inc."
               class="h-11 sm:h-12 w-auto object-contain shrink-0"
             />
@@ -772,8 +772,8 @@ function doGet(e) {
     const STORAGE_KEY_THEME = 'imerch_theme_mode';
     const DEFAULT_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyX5Bxcv6ODbMUyRdUv81x9-3yu_1-OvIR47L65HLKwNZDCNZijZNBhJF2gWJtp9DOzMA/exec';
 
-    const LOGO_LIGHT = 'imerchlogo.jpg';
-    const LOGO_DARK = 'imerchlogowhite1.jpg';
+    const LOGO_LIGHT = 'imerchlogo.png';
+    const LOGO_DARK = 'imerchlogowhite1.png';
 
     let assets = [];
     let currentFormMode = 'new';
