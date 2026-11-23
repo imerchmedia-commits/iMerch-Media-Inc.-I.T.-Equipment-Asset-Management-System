@@ -1,0 +1,1676 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>iMerch Media Inc. | I.T. Equipment & Asset Management System</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+            },
+            cyber: {
+              500: '#6366f1',
+              600: '#4f46e5',
+            }
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    /* Base Glassmorphism & Theme Backgrounds */
+    :root {
+      --bg-gradient: radial-gradient(circle at 12% 18%, rgba(56, 189, 248, 0.16), transparent 36%),
+                     radial-gradient(circle at 88% 12%, rgba(99, 102, 241, 0.15), transparent 40%),
+                     radial-gradient(circle at 50% 90%, rgba(16, 185, 129, 0.10), transparent 45%),
+                     #f1f5f9;
+      --glass-bg: rgba(255, 255, 255, 0.72);
+      --glass-border: rgba(255, 255, 255, 0.85);
+      --glass-shadow: 0 8px 32px rgba(15, 23, 42, 0.08);
+      --glass-input: rgba(255, 255, 255, 0.85);
+    }
+
+    html.dark {
+      --bg-gradient: radial-gradient(circle at 15% 15%, rgba(14, 165, 233, 0.18), transparent 38%),
+                     radial-gradient(circle at 85% 20%, rgba(99, 102, 241, 0.22), transparent 42%),
+                     radial-gradient(circle at 50% 88%, rgba(16, 185, 129, 0.12), transparent 45%),
+                     #070b14;
+      --glass-bg: rgba(15, 23, 42, 0.65);
+      --glass-border: rgba(148, 163, 184, 0.16);
+      --glass-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+      --glass-input: rgba(30, 41, 59, 0.7);
+    }
+
+    body {
+      background: var(--bg-gradient);
+      background-attachment: fixed;
+      min-height: 100vh;
+      transition: background 0.35s ease, color 0.25s ease;
+    }
+
+    .glass-panel {
+      background: var(--glass-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--glass-shadow);
+    }
+
+    .glass-input {
+      background: var(--glass-input);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(148, 163, 184, 0.28);
+      transition: all 0.2s ease;
+    }
+
+    .glass-input:focus {
+      outline: none;
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.22);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 7px;
+      height: 7px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.35);
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(148, 163, 184, 0.55);
+    }
+
+    /* Print Styles for Official A4 Acknowledgement Receipt */
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      body {
+        background: #ffffff !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+      #printAreaModal, #printAreaModal * {
+        visibility: visible;
+      }
+      #printAreaModal {
+        position: fixed !important;
+        inset: 0 !important;
+        background: #ffffff !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        overflow: visible !important;
+        display: block !important;
+      }
+      #arPrintableSheet {
+        box-shadow: none !important;
+        border: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 12mm !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="text-slate-800 dark:text-slate-100 antialiased selection:bg-sky-500 selection:text-white">
+
+  <!-- Toast Notification Banner -->
+  <div id="toastContainer" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- Top Glass Navigation Bar -->
+  <header class="sticky top-0 z-30 glass-panel border-x-0 border-t-0 rounded-none">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3">
+      <!-- Brand Identity -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-500 to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-sky-500/25">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+          </svg>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-base sm:text-lg font-extrabold tracking-tight bg-gradient-to-r from-sky-500 to-indigo-500 dark:from-sky-400 dark:to-indigo-400 bg-clip-text text-transparent">
+              iMerch Media Inc.
+            </h1>
+            <span class="hidden sm:inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-mono font-semibold uppercase tracking-wider bg-sky-500/15 text-sky-600 dark:text-sky-300 border border-sky-500/25">
+              IT Asset Core
+            </span>
+          </div>
+          <p class="text-xs text-slate-500 dark:text-slate-400">Equipment Registry &amp; Acknowledgement Receipt System</p>
+        </div>
+      </div>
+
+      <!-- Header Actions -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Connection Mode Pill -->
+        <button onclick="openConfigModal()" id="syncStatusBtn" class="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-medium glass-input hover:border-sky-400 transition cursor-pointer" title="Configure Google Sheets & Drive Backend">
+          <span id="syncDot" class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+          <span id="syncLabel" class="hidden md:inline">Local Demo Mode</span>
+          <svg class="w-4 h-4 text-slate-500 dark:text-slate-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+        </button>
+
+        <!-- Apps Script Code Viewer Button -->
+        <button onclick="openScriptModal()" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-indigo-500/15 hover:bg-indigo-500/25 text-indigo-600 dark:text-indigo-300 border border-indigo-500/25 transition cursor-pointer" title="View Google Apps Script Backend Code">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+          </svg>
+          <span class="hidden sm:inline">Apps Script</span>
+        </button>
+
+        <!-- Dark / Light Theme Toggle -->
+        <button onclick="toggleTheme()" id="themeToggleBtn" class="p-2.5 rounded-xl glass-input hover:border-sky-400 transition cursor-pointer" title="Toggle Dark / Light Mode">
+          <!-- Sun Icon (shown in dark mode) -->
+          <svg id="iconSun" class="w-4 h-4 text-amber-400 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+          <!-- Moon Icon (shown in light mode) -->
+          <svg id="iconMoon" class="w-4 h-4 text-slate-700 block dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Workspace -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+    <!-- KPI Summary Cards -->
+    <section class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="glass-panel rounded-2xl p-4 sm:p-5 flex items-center justify-between">
+        <div>
+          <p class="text-xs font-medium uppercase tracking-wider text-slate-500 dark:text-slate-400">Total Assets</p>
+          <p id="kpiTotal" class="text-2xl sm:text-3xl font-extrabold mt-1 font-mono">0</p>
+          <p class="text-[11px] text-sky-600 dark:text-sky-400 mt-1">Series IM-0001+</p>
+        </div>
+        <div class="w-11 h-11 rounded-2xl bg-sky-500/15 text-sky-500 flex items-center justify-center">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+          </svg>
+        </div>
+      </div>
+
+      <div class="glass-panel rounded-2xl p-4 sm:p-5 flex items-center justify-between">
+        <div>
+          <p class="text-xs font-medium uppercase tracking-wider text-slate-500 dark:text-slate-400">Assigned / Active</p>
+          <p id="kpiAssigned" class="text-2xl sm:text-3xl font-extrabold mt-1 font-mono text-emerald-600 dark:text-emerald-400">0</p>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">In Employee Custody</p>
+        </div>
+        <div class="w-11 h-11 rounded-2xl bg-emerald-500/15 text-emerald-500 flex items-center justify-center">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+      </div>
+
+      <div class="glass-panel rounded-2xl p-4 sm:p-5 flex items-center justify-between">
+        <div>
+          <p class="text-xs font-medium uppercase tracking-wider text-slate-500 dark:text-slate-400">Available / Returned</p>
+          <p id="kpiAvailable" class="text-2xl sm:text-3xl font-extrabold mt-1 font-mono text-amber-600 dark:text-amber-400">0</p>
+          <p class="text-[11px] text-amber-600 dark:text-amber-400 mt-1">Ready to Borrow/Reassign</p>
+        </div>
+        <div class="w-11 h-11 rounded-2xl bg-amber-500/15 text-amber-500 flex items-center justify-center">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+          </svg>
+        </div>
+      </div>
+
+      <div class="glass-panel rounded-2xl p-4 sm:p-5 flex items-center justify-between">
+        <div>
+          <p class="text-xs font-medium uppercase tracking-wider text-slate-500 dark:text-slate-400">Total Asset Value</p>
+          <p id="kpiValue" class="text-xl sm:text-2xl font-extrabold mt-1 font-mono text-indigo-600 dark:text-indigo-400">₱0.00</p>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">Acquisition Cost</p>
+        </div>
+        <div class="w-11 h-11 rounded-2xl bg-indigo-500/15 text-indigo-500 flex items-center justify-center">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- Upper Workspace Grid: Registration/Reassign Form (Left) + Interactive Asset Calendar (Right) -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+      <!-- Left Column (7 cols): Equipment Registration & Reassignment Form -->
+      <div class="lg:col-span-7 glass-panel rounded-2xl p-5 sm:p-6">
+        <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-200/60 dark:border-slate-700/60">
+          <div>
+            <h2 class="text-base sm:text-lg font-bold flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-sky-500"></span>
+              Equipment Custody &amp; Issuance Form
+            </h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Register new IT hardware or reassign returned units to borrowing staff</p>
+          </div>
+
+          <!-- Active Tag Pill -->
+          <div class="px-3 py-1.5 rounded-xl bg-sky-500/15 border border-sky-500/30 flex items-center gap-2">
+            <span class="text-[11px] uppercase tracking-wider font-semibold text-slate-500 dark:text-slate-400">Asset Tag:</span>
+            <span id="displayAssetId" class="font-mono font-bold text-sm text-sky-600 dark:text-sky-300">IM-0001</span>
+          </div>
+        </div>
+
+        <!-- Mode Switcher Tabs: New Equipment vs Borrow/Reassign Existing -->
+        <div class="grid grid-cols-2 gap-2 p-1 rounded-xl bg-slate-200/70 dark:bg-slate-800/80 my-4">
+          <button type="button" id="tabNewEntry" onclick="setFormMode('new')" class="py-2 px-3 rounded-lg text-xs sm:text-sm font-semibold transition flex items-center justify-center gap-2 bg-white dark:bg-slate-700 text-sky-600 dark:text-sky-300 shadow-sm cursor-pointer">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+            </svg>
+            New Asset Entry
+          </button>
+          <button type="button" id="tabReassignEntry" onclick="setFormMode('reassign')" class="py-2 px-3 rounded-lg text-xs sm:text-sm font-semibold transition flex items-center justify-center gap-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white cursor-pointer">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+            </svg>
+            Borrow / Reassign Returned
+          </button>
+        </div>
+
+        <form id="equipmentForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
+          <!-- Reassign Dropdown Banner (Visible only in 'reassign' mode) -->
+          <div id="reassignSelectorBox" class="hidden p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 space-y-2">
+            <label for="availableAssetSelect" class="block text-xs font-bold uppercase tracking-wider text-amber-700 dark:text-amber-300">
+              Select Available / Returned Equipment to Borrow or Reassign
+            </label>
+            <select id="availableAssetSelect" onchange="populateFromAvailableAsset()" class="w-full rounded-xl px-3.5 py-2.5 text-sm glass-input font-medium">
+              <option value="">-- Choose available unit (e.g., returned laptop) --</option>
+            </select>
+            <p id="previousCustodianNote" class="text-[11px] text-slate-600 dark:text-slate-300 italic hidden"></p>
+          </div>
+
+          <!-- Row 1: Employee Name & Department -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="employeeName" class="block text-xs font-semibold mb-1.5 text-slate-700 dark:text-slate-300">
+                Name of Employee (Borrower / Assignee) <span class="text-rose-500">*</span>
+              </label>
+              <input type="text" id="employeeName" required placeholder="e.g., Juan Dela Cruz" class="w-full rounded-xl px-3.5 py-2.5 text-sm glass-input" />
+            </div>
+            <div>
+              <label for="department" class="block text-xs font-semibold mb-1.5 text-slate-700 dark:text-slate-300">
+                Department / Team <span class="text-rose-500">*</span>
+              </label>
+              <select id="department" required class="w-full rounded-xl px-3.5 py-2.5 text-sm glass-input">
+                <option value="Creative & Multimedia">Creative &amp; Multimedia</option>
+                <option value="IT & Systems Engineering">IT &amp; Systems Engineering</option>
+                <option value="Digital Marketing">Digital Marketing</option>
+                <option value="Sales & Account Management">Sales &amp; Account Management</option>
+                <option value="HR & Admin">HR &amp; Admin</option>
+                <option value="Finance & Accounting">Finance &amp; Accounting</option>
+                <option value="Operations">Operations</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Row 2: Equipment Category & Status -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="category" class="block text-xs font-semibold mb-1.5 text-slate-700 dark:text-slate-300">
+                Equipment Category <span class="text-rose-500">*</span>
+              </label>
+              <select id="category" required class="w-full rounded-xl px-3.5 py-2.5 text-sm glass-input">
+                <option value="Laptop">Laptop</option>
+                <option value="Desktop">Desktop</option>
+                <option value="Printer">Printer</option>
+                <option value="Monitor">Monitor</option>
+                <option value="Peripherals">Peripherals (Keyboard/Mouse/Headset)</option>
+                <option value="Mobile Device">Mobile Device / Tablet</option>
+                <option value="Network Gear">Network Gear / Router</option>
+                <option value="Other">Other IT Equipment</option>
+              </select>
+            </div>
+            <div>
+              <label for="status" class="block text-xs font-semibold mb-1.5 text-slate-700 dark:text-slate-300">
+                Custody Status <span class="text-rose-500">*</span>
+              </label>
+              <select id="status" required class="w-full rounded-xl px-3.5 py-2.5 text-sm glass-input">
+                <option value="Assigned">Assigned (Active Custody)</option>
+                <option value="Borrowed">Borrowed (Temporary Issuance)</option>
+                <option value="Available">Available / In IT Stock</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Row 3: Item Details -->
+          <div>
+            <label for="itemDetails" class="block text-xs font-semibold mb-1.5 text-slate-700 dark:text-slate-300">
+              Item Details (Brand, Model, Specs, Serial Number) <span class="text-rose-500">*</span>
+            </label>
+            <textarea id="itemDetails" rows="2" required placeholder="e.g., Apple MacBook Pro 14 M3 | 16GB RAM / 512GB SSD | S/N: C02ZN123MD6R + Charger" class="w-full rounded-xl px-3.5 py-2 text-sm glass-input"></textarea>
+          </div>
+
+          <!-- Row 4: Date Purchased, Price, Date Received -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label for="datePurchased" class="block text-xs font-semibold mb-1.5 text-slate-700 dark:text-slate-300">
+                Date Purchased <span class="text-rose-500">*</span>
+              </label>
+              <input type="date" id="datePurchased" required class="w-full rounded-xl px-3.5 py-2.5 text-sm glass-input" />
+            </div>
+            <div>
+              <label for="price" class="block text-xs font-semibold mb-1.5 text-slate-700 dark:text-slate-300">
+                Price (PHP ₱) <span class="text-rose-500">*</span>
+              </label>
+              <input type="number" id="price" step="0.01" min="0" required placeholder="45000.00" class="w-full rounded-xl px-3.5 py-2.5 text-sm glass-input font-mono" />
+            </div>
+            <div>
+              <label for="dateReceived" class="block text-xs font-semibold mb-1.5 text-slate-700 dark:text-slate-300">
+                Date Received / Issued <span class="text-rose-500">*</span>
+              </label>
+              <input type="date" id="dateReceived" required class="w-full rounded-xl px-3.5 py-2.5 text-sm glass-input" />
+            </div>
+          </div>
+
+          <!-- Row 5: Acknowledgement Receipt (AR) Attachment -->
+          <div>
+            <label for="arFile" class="block text-xs font-semibold mb-1.5 text-slate-700 dark:text-slate-300">
+              Attach Signed Acknowledgement Receipt (PDF / JPG / PNG)
+            </label>
+            <div class="flex flex-col sm:flex-row sm:items-center gap-3 p-3 rounded-xl glass-input border-dashed">
+              <input type="file" id="arFile" accept=".pdf,image/*" class="text-xs file:mr-3 file:py-2 file:px-3.5 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-sky-500/15 file:text-sky-600 dark:file:text-sky-300 hover:file:bg-sky-500/25 cursor-pointer w-full" />
+              <span class="text-[11px] text-slate-500 dark:text-slate-400 shrink-0">Uploads to Google Drive</span>
+            </div>
+          </div>
+
+          <!-- Submit & Reset Buttons -->
+          <div class="pt-2 flex flex-wrap items-center justify-end gap-3">
+            <button type="button" onclick="resetForm()" class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold glass-input hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition cursor-pointer">
+              Clear Form
+            </button>
+            <button type="submit" id="submitBtn" class="px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 shadow-lg shadow-sky-500/25 flex items-center gap-2 transition cursor-pointer">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              <span id="submitBtnText">Save Equipment &amp; Generate Tag</span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Right Column (5 cols): Interactive Asset Schedule & Handover Calendar -->
+      <div class="lg:col-span-5 glass-panel rounded-2xl p-5 sm:p-6 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between pb-4 border-b border-slate-200/60 dark:border-slate-700/60">
+            <div>
+              <h2 class="text-base sm:text-lg font-bold flex items-center gap-2">
+                <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                IT Asset Activity Calendar
+              </h2>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Track equipment purchases &amp; employee releases</p>
+            </div>
+            <div class="flex items-center gap-1">
+              <button type="button" onclick="changeMonth(-1)" class="p-2 rounded-lg glass-input hover:border-sky-400 transition cursor-pointer" title="Previous Month">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>
+              </button>
+              <button type="button" onclick="goToToday()" class="px-2.5 py-1.5 rounded-lg glass-input text-xs font-semibold hover:border-sky-400 transition cursor-pointer">
+                Today
+              </button>
+              <button type="button" onclick="changeMonth(1)" class="p-2 rounded-lg glass-input hover:border-sky-400 transition cursor-pointer" title="Next Month">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Month / Year Header -->
+          <div class="flex items-center justify-between my-3">
+            <h3 id="calendarMonthYear" class="text-sm font-bold text-slate-800 dark:text-slate-100">November 2026</h3>
+            <div class="flex items-center gap-3 text-[11px]">
+              <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> Issued/Received</span>
+              <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-sky-500"></span> Purchased</span>
+            </div>
+          </div>
+
+          <!-- Weekday Headers -->
+          <div class="grid grid-cols-7 gap-1 text-center text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">
+            <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+          </div>
+
+          <!-- Calendar Days Grid -->
+          <div id="calendarGrid" class="grid grid-cols-7 gap-1.5 text-center"></div>
+        </div>
+
+        <!-- Selected Date Event Inspector -->
+        <div class="mt-4 pt-3 border-t border-slate-200/60 dark:border-slate-700/60">
+          <div class="flex items-center justify-between mb-2">
+            <span id="selectedDateTitle" class="text-xs font-bold uppercase tracking-wider text-sky-600 dark:text-sky-400">
+              Select a date to view logs
+            </span>
+            <button id="clearDateFilterBtn" onclick="clearDateFilter()" class="hidden text-[11px] text-rose-500 hover:underline font-semibold cursor-pointer">
+              Clear Table Filter
+            </button>
+          </div>
+          <div id="calendarEventList" class="space-y-1.5 max-h-32 overflow-y-auto pr-1 text-xs">
+            <p class="text-slate-500 dark:text-slate-400 italic">Click any highlighted day on the calendar to inspect asset handovers or purchases.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lower Workspace: Equipment Registry & Acknowledgement Receipt Table -->
+    <section class="glass-panel rounded-2xl p-5 sm:p-6 space-y-4">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-base sm:text-lg font-bold flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+            I.T. Equipment Inventory &amp; Custody Ledger
+          </h2>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+            Print official Acknowledgement Receipts (AR), view Drive attachments, or mark units as returned for re-borrowing
+          </p>
+        </div>
+
+        <!-- Search & Filter Controls -->
+        <div class="flex flex-wrap items-center gap-2.5">
+          <div class="relative flex-1 sm:w-64">
+            <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input type="text" id="searchInput" oninput="renderTable()" placeholder="Search IM-0001, employee, item..." class="w-full rounded-xl pl-9 pr-3.5 py-2 text-xs sm:text-sm glass-input" />
+          </div>
+
+          <select id="filterCategory" onchange="renderTable()" class="rounded-xl px-3 py-2 text-xs sm:text-sm glass-input">
+            <option value="ALL">All Categories</option>
+            <option value="Laptop">Laptop</option>
+            <option value="Desktop">Desktop</option>
+            <option value="Printer">Printer</option>
+            <option value="Monitor">Monitor</option>
+            <option value="Peripherals">Peripherals</option>
+            <option value="Mobile Device">Mobile Device</option>
+            <option value="Network Gear">Network Gear</option>
+            <option value="Other">Other</option>
+          </select>
+
+          <select id="filterStatus" onchange="renderTable()" class="rounded-xl px-3 py-2 text-xs sm:text-sm glass-input">
+            <option value="ALL">All Status</option>
+            <option value="Assigned">Assigned</option>
+            <option value="Borrowed">Borrowed</option>
+            <option value="Available">Available / Returned</option>
+          </select>
+
+          <button onclick="exportCSV()" class="px-3.5 py-2 rounded-xl text-xs font-semibold glass-input hover:border-sky-400 flex items-center gap-1.5 transition cursor-pointer" title="Export CSV">
+            <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            Export CSV
+          </button>
+        </div>
+      </div>
+
+      <!-- Responsive Equipment Table -->
+      <div class="overflow-x-auto rounded-xl border border-slate-200/60 dark:border-slate-700/60">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="bg-slate-200/60 dark:bg-slate-800/80 text-[11px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300">
+              <th class="py-3.5 px-4">Asset ID</th>
+              <th class="py-3.5 px-4">Employee &amp; Dept</th>
+              <th class="py-3.5 px-4">Category &amp; Item Details</th>
+              <th class="py-3.5 px-4">Dates (Purch / Recv)</th>
+              <th class="py-3.5 px-4">Price</th>
+              <th class="py-3.5 px-4">Status</th>
+              <th class="py-3.5 px-4">AR Attachment</th>
+              <th class="py-3.5 px-4 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="equipmentTableBody" class="divide-y divide-slate-200/50 dark:divide-slate-700/50 text-xs sm:text-sm">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL 1: PRINTABLE OFFICIAL ACKNOWLEDGEMENT RECEIPT (AR) PREVIEW      -->
+  <!-- ===================================================================== -->
+  <div id="printAreaModal" class="fixed inset-0 z-50 hidden bg-slate-950/75 backdrop-blur-sm overflow-y-auto p-4 sm:p-8 flex items-start justify-center">
+    <div class="w-full max-w-3xl space-y-4 my-auto">
+      <!-- Top Action Bar (Hidden during print) -->
+      <div class="no-print glass-panel rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-sky-500"></span>
+          <h3 class="text-sm font-bold text-slate-800 dark:text-white">Official Acknowledgement Receipt Preview</h3>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="window.print()" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 shadow-lg flex items-center gap-2 cursor-pointer">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+            </svg>
+            Print Acknowledgement Receipt
+          </button>
+          <button onclick="closePrintModal()" class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold glass-input hover:bg-rose-500/20 hover:text-rose-400 transition cursor-pointer">
+            Close
+          </button>
+        </div>
+      </div>
+
+      <!-- Formal Paper Sheet (Always clean white for printing) -->
+      <div id="arPrintableSheet" class="bg-white text-slate-900 rounded-xl shadow-2xl p-6 sm:p-10 border border-slate-300">
+        <!-- Letterhead -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b-2 border-slate-900 pb-4 gap-4">
+          <div>
+            <h1 class="text-2xl font-extrabold tracking-tight text-slate-900 uppercase">iMerch Media Inc.</h1>
+            <p class="text-xs font-semibold tracking-wider text-slate-600 uppercase">Information Technology &amp; Systems Department</p>
+            <p class="text-[11px] text-slate-500 mt-0.5">Metro Manila, Philippines • IT Asset Management Unit</p>
+          </div>
+          <div class="sm:text-right">
+            <div class="inline-block border-2 border-slate-900 px-3 py-1 rounded">
+              <span class="block text-[10px] font-bold uppercase tracking-widest text-slate-500">Asset Control Tag</span>
+              <span id="arAssetId" class="font-mono text-lg font-extrabold text-slate-900">IM-0001</span>
+            </div>
+            <p class="text-xs text-slate-600 mt-1.5">Date Issued: <strong id="arDateIssued">2026-11-23</strong></p>
+          </div>
+        </div>
+
+        <!-- Document Title -->
+        <div class="text-center my-6">
+          <h2 class="text-lg font-extrabold uppercase tracking-widest text-slate-900 underline underline-offset-4">
+            I.T. Equipment Acknowledgement Receipt
+          </h2>
+          <p class="text-xs text-slate-600 mt-1">Official Accountability &amp; Custody Form (<span id="arIssuanceType">Assigned Hardware</span>)</p>
+        </div>
+
+        <!-- Employee & Custodian Information Box -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 border border-slate-300 rounded-lg p-4 bg-slate-50 text-xs mb-6">
+          <div>
+            <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Employee / Borrower Name</p>
+            <p id="arEmployeeName" class="text-sm font-bold text-slate-900 mt-0.5">Employee Name</p>
+          </div>
+          <div>
+            <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Department / Business Unit</p>
+            <p id="arDepartment" class="text-sm font-bold text-slate-900 mt-0.5">Department</p>
+          </div>
+          <div>
+            <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Equipment Type / Category</p>
+            <p id="arCategory" class="text-sm font-bold text-slate-900 mt-0.5">Laptop</p>
+          </div>
+          <div>
+            <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Custody Classification</p>
+            <p id="arStatus" class="text-sm font-bold text-slate-900 mt-0.5">Assigned</p>
+          </div>
+        </div>
+
+        <!-- Equipment Details Table -->
+        <table class="w-full border-collapse border border-slate-400 text-xs mb-6">
+          <thead>
+            <tr class="bg-slate-200 text-slate-900 font-bold uppercase">
+              <th class="border border-slate-400 py-2.5 px-3 text-left w-24">Asset Tag</th>
+              <th class="border border-slate-400 py-2.5 px-3 text-left w-28">Category</th>
+              <th class="border border-slate-400 py-2.5 px-3 text-left">Item Description, Brand, Model &amp; Serial No.</th>
+              <th class="border border-slate-400 py-2.5 px-3 text-center w-28">Date Purchased</th>
+              <th class="border border-slate-400 py-2.5 px-3 text-right w-28">Declared Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td id="arTableTag" class="border border-slate-400 py-3 px-3 font-mono font-bold align-top">IM-0001</td>
+              <td id="arTableCat" class="border border-slate-400 py-3 px-3 font-semibold align-top">Laptop</td>
+              <td id="arTableDesc" class="border border-slate-400 py-3 px-3 align-top leading-relaxed">Specs here</td>
+              <td id="arTablePurch" class="border border-slate-400 py-3 px-3 text-center align-top">2026-01-15</td>
+              <td id="arTablePrice" class="border border-slate-400 py-3 px-3 text-right font-mono font-semibold align-top">₱0.00</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Custody History Note (if Reassigned / Borrowed) -->
+        <div id="arHistoryBox" class="hidden mb-5 p-3 rounded border border-slate-300 bg-slate-50 text-[11px] text-slate-700">
+          <strong>Issuance History Note:</strong> <span id="arHistoryText"></span>
+        </div>
+
+        <!-- Accountability Terms & Conditions -->
+        <div class="space-y-2 text-[11px] text-slate-700 leading-relaxed mb-8 border-t border-slate-200 pt-4">
+          <p class="font-bold uppercase text-slate-900">Terms of Accountability &amp; Custody:</p>
+          <ol class="list-decimal list-inside space-y-1">
+            <li>I acknowledge receipt of the above-described company property from <strong>iMerch Media Inc.</strong> in good working condition, complete with listed accessories.</li>
+            <li>I agree to use this equipment strictly for official business purposes and exercise reasonable care to prevent theft, loss, or physical/liquid damage.</li>
+            <li>No unauthorized software installation, hardware modification, or third-party lending is permitted without prior clearance from the I.T. Department.</li>
+            <li>Upon resignation, termination, transfer, or upon demand by Management/IT, I agree to surrender this unit immediately in good condition; otherwise, the corresponding depreciated/replacement cost may be deducted from my final pay or settled accordingly.</li>
+          </ol>
+        </div>
+
+        <!-- Signatories Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 pt-6 text-xs">
+          <div>
+            <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-10">Received &amp; Acknowledged By:</p>
+            <div class="border-t border-slate-900 pt-1.5">
+              <p id="arSignEmployee" class="font-bold text-slate-900 uppercase">EMPLOYEE NAME</p>
+              <p class="text-[11px] text-slate-600">Employee Signature over Printed Name</p>
+              <p class="text-[11px] text-slate-600 mt-1">Date Signed: ___________________</p>
+            </div>
+          </div>
+
+          <div>
+            <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-10">Issued &amp; Verified By:</p>
+            <div class="border-t border-slate-900 pt-1.5">
+              <p class="font-bold text-slate-900 uppercase">I.T. Department Representative</p>
+              <p class="text-[11px] text-slate-600">System Administrator / IT Support</p>
+              <p class="text-[11px] text-slate-600 mt-1">Date Released: <span id="arSignDate">2026-11-23</span></p>
+            </div>
+          </div>
+
+          <div>
+            <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-10">Noted By:</p>
+            <div class="border-t border-slate-900 pt-1.5">
+              <p class="font-bold text-slate-900 uppercase">HR &amp; Admin Department</p>
+              <p class="text-[11px] text-slate-600">Authorized Signatory</p>
+              <p class="text-[11px] text-slate-600 mt-1">Date Noted: _____________________</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL 2: GOOGLE SHEETS & DRIVE BACKEND CONFIGURATION                  -->
+  <!-- ===================================================================== -->
+  <div id="configModal" class="fixed inset-0 z-50 hidden bg-slate-950/75 backdrop-blur-sm p-4 flex items-center justify-center">
+    <div class="glass-panel rounded-2xl w-full max-w-lg p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-200/60 dark:border-slate-700/60 pb-3">
+        <h3 class="text-base font-bold flex items-center gap-2">
+          <svg class="w-5 h-5 text-sky-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
+          </svg>
+          Google Sheets + Drive Backend Sync
+        </h3>
+        <button onclick="closeConfigModal()" class="text-slate-400 hover:text-rose-400 cursor-pointer">✕</button>
+      </div>
+
+      <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+        Paste your deployed <strong>Google Apps Script Web App URL</strong> below to sync all <code class="font-mono text-sky-500">IM-XXXX</code> records directly to Google Sheets and store uploaded Acknowledgement Receipts in Google Drive. Leave blank to run in instant Local Demo Mode.
+      </p>
+
+      <div>
+        <label for="scriptUrlInput" class="block text-xs font-semibold mb-1.5">Google Apps Script Web App URL</label>
+        <input type="url" id="scriptUrlInput" placeholder="https://script.google.com/macros/s/AKfycb.../exec" class="w-full rounded-xl px-3.5 py-2.5 text-xs font-mono glass-input" />
+      </div>
+
+      <div class="flex flex-wrap items-center justify-between gap-2 pt-2">
+        <button type="button" onclick="resetDemoData()" class="px-3.5 py-2 rounded-xl text-xs font-semibold text-amber-600 dark:text-amber-400 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/25 cursor-pointer">
+          Reset Sample Data
+        </button>
+        <div class="flex items-center gap-2">
+          <button type="button" onclick="closeConfigModal()" class="px-4 py-2 rounded-xl text-xs font-semibold glass-input cursor-pointer">Cancel</button>
+          <button type="button" onclick="saveScriptUrl()" class="px-4 py-2 rounded-xl text-xs font-bold text-white bg-sky-600 hover:bg-sky-500 shadow cursor-pointer">
+            Save &amp; Sync Now
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL 3: GOOGLE APPS SCRIPT BACKEND CODE VIEWER                       -->
+  <!-- ===================================================================== -->
+  <div id="scriptModal" class="fixed inset-0 z-50 hidden bg-slate-950/75 backdrop-blur-sm p-4 flex items-center justify-center">
+    <div class="glass-panel rounded-2xl w-full max-w-3xl p-6 space-y-4 max-h-[90vh] flex flex-col">
+      <div class="flex items-center justify-between border-b border-slate-200/60 dark:border-slate-700/60 pb-3">
+        <div>
+          <h3 class="text-base font-bold">Google Apps Script Backend (<code class="font-mono text-sky-400">Code.gs</code>)</h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400">Supports sequential IM-0001 tags, Reassignments, Google Sheets logging &amp; Google Drive AR uploads</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="copyAppsScriptCode()" class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white flex items-center gap-1.5 cursor-pointer">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+            </svg>
+            Copy Code
+          </button>
+          <button onclick="closeScriptModal()" class="px-3 py-1.5 rounded-xl text-xs font-semibold glass-input cursor-pointer">Close</button>
+        </div>
+      </div>
+
+      <div class="overflow-y-auto rounded-xl bg-slate-950 text-slate-200 p-4 border border-slate-800 font-mono text-xs leading-relaxed">
+<pre id="appsScriptCodeBlock">const SHEET_NAME = "Equipment_Logs";
+const FOLDER_ID = "YOUR_GOOGLE_DRIVE_FOLDER_ID"; // Palitan ng actual Google Drive Folder ID
+
+function doGet(e) {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
+  const data = sheet.getDataRange().getValues();
+  if (data.length &lt;= 1) {
+    return ContentService.createTextOutput(JSON.stringify({ status: "success", data: [] }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+  const headers = data[0];
+  const rows = data.slice(1).map(row =&gt; {
+    let obj = {};
+    headers.forEach((h, i) =&gt; obj[h] = row[i]);
+    return obj;
+  });
+  return ContentService
+    .createTextOutput(JSON.stringify({ status: "success", data: rows }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function doPost(e) {
+  try {
+    const payload = JSON.parse(e.postData.contents);
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
+    const folder = DriveApp.getFolderById(FOLDER_ID);
+    const data = sheet.getDataRange().getValues();
+
+    let fileUrl = payload.arFileUrl || "No Attachment";
+
+    // Upload Acknowledgement Receipt kung may bagong file attachment
+    if (payload.fileData &amp;&amp; payload.fileName) {
+      const contentType = payload.fileData.substring(5, payload.fileData.indexOf(';'));
+      const base64Data = payload.fileData.split(',')[1];
+      const decoded = Utilities.base64Decode(base64Data);
+      const cleanEmpName = payload.employeeName.replace(/[^a-zA-Z0-9]/g, "_");
+      const newFileName = `AR_${payload.assetId}_${cleanEmpName}_${payload.fileName}`;
+
+      const blob = Utilities.newBlob(decoded, contentType, newFileName);
+      const file = folder.createFile(blob);
+      file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+      fileUrl = file.getUrl();
+    }
+
+    const timestamp = new Date().toLocaleString("en-PH", { timeZone: "Asia/Manila" });
+
+    // Check kung existing Asset ID (for Reassignment / Return update)
+    let existingRowIndex = -1;
+    for (let i = 1; i &lt; data.length; i++) {
+      if (data[i][0] === payload.assetId) {
+        existingRowIndex = i + 1;
+        break;
+      }
+    }
+
+    const rowValues = [
+      payload.assetId,
+      payload.employeeName,
+      payload.department,
+      payload.category,
+      payload.itemDetails,
+      payload.datePurchased,
+      payload.price,
+      payload.dateReceived,
+      payload.status,
+      fileUrl,
+      payload.historyNote || "",
+      timestamp
+    ];
+
+    if (existingRowIndex &gt; 0) {
+      sheet.getRange(existingRowIndex, 1, 1, rowValues.length).setValues([rowValues]);
+    } else {
+      sheet.appendRow(rowValues);
+    }
+
+    return ContentService
+      .createTextOutput(JSON.stringify({ status: "success", assetId: payload.assetId, fileUrl: fileUrl }))
+      .setMimeType(ContentService.MimeType.JSON);
+
+  } catch (err) {
+    return ContentService
+      .createTextOutput(JSON.stringify({ status: "error", message: err.toString() }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- APPLICATION JAVASCRIPT LOGIC                                          -->
+  <!-- ===================================================================== -->
+  <script>
+    // Storage Keys
+    const STORAGE_KEY_ASSETS = 'imerch_it_assets_v1';
+    const STORAGE_KEY_SCRIPT_URL = 'imerch_apps_script_url';
+    const STORAGE_KEY_THEME = 'imerch_theme_mode';
+
+    // Default Pre-loaded Sample Records (Starting at IM-0001)
+    const INITIAL_SAMPLE_ASSETS = [
+      {
+        assetId: 'IM-0001',
+        employeeName: 'Unassigned (Returned by Mark Reyes)',
+        department: 'Creative & Multimedia',
+        category: 'Laptop',
+        itemDetails: 'Apple MacBook Pro 14" M2 Pro | 16GB RAM / 512GB SSD | S/N: C02X94K1MD6R + 67W MagSafe Charger',
+        datePurchased: '2025-06-15',
+        price: 98500,
+        dateReceived: '2026-11-10',
+        status: 'Available',
+        arFileName: 'AR_IM-0001_Return_Clearance.pdf',
+        arFileUrl: '#',
+        historyNote: 'Previously assigned to Mark Reyes (Resigned Nov 10, 2026). Inspected & cleared by IT for borrowing/reassignment.'
+      },
+      {
+        assetId: 'IM-0002',
+        employeeName: 'Angela Marie Santos',
+        department: 'Digital Marketing',
+        category: 'Laptop',
+        itemDetails: 'Lenovo ThinkPad X1 Carbon Gen 11 | Intel Core i7 / 16GB / 1TB NVMe | S/N: PF-49281A',
+        datePurchased: '2026-02-10',
+        price: 76900,
+        dateReceived: '2026-02-14',
+        status: 'Assigned',
+        arFileName: 'AR_IM-0002_Angela_Santos.pdf',
+        arFileUrl: '#',
+        historyNote: 'Brand new issuance upon onboarding.'
+      },
+      {
+        assetId: 'IM-0003',
+        employeeName: 'Carlo Mendoza',
+        department: 'IT & Systems Engineering',
+        category: 'Desktop',
+        itemDetails: 'Custom Workstation Ryzen 9 7900X | 64GB DDR5 / RTX 4070 / 2TB SSD | S/N: IM-WS-0093',
+        datePurchased: '2026-05-20',
+        price: 112000,
+        dateReceived: '2026-05-22',
+        status: 'Assigned',
+        arFileName: 'AR_IM-0003_Carlo_Mendoza.jpg',
+        arFileUrl: '#',
+        historyNote: 'Primary video rendering & server admin workstation.'
+      },
+      {
+        assetId: 'IM-0004',
+        employeeName: 'Sofia Bautista',
+        department: 'Finance & Accounting',
+        category: 'Printer',
+        itemDetails: 'Epson EcoTank L6490 Wi-Fi Duplex All-in-One Ink Tank Printer | S/N: X89K204912',
+        datePurchased: '2026-08-05',
+        price: 21500,
+        dateReceived: '2026-08-08',
+        status: 'Assigned',
+        arFileName: 'AR_IM-0004_Sofia_Bautista.pdf',
+        arFileUrl: '#',
+        historyNote: 'Assigned to Finance & Billing Wing.'
+      },
+      {
+        assetId: 'IM-0005',
+        employeeName: 'Unassigned (Spare Pool)',
+        department: 'Operations',
+        category: 'Laptop',
+        itemDetails: 'ASUS Zenbook 14 OLED | Ryzen 7 / 16GB RAM / 512GB SSD | S/N: N8N0CX049218',
+        datePurchased: '2026-09-12',
+        price: 54995,
+        dateReceived: '2026-11-18',
+        status: 'Available',
+        arFileName: '',
+        arFileUrl: '',
+        historyNote: 'Returned from short-term field event; ready for employee loan.'
+      }
+    ];
+
+    // Global State
+    let assets = [];
+    let currentFormMode = 'new'; // 'new' or 'reassign'
+    let calendarDate = new Date(2026, 10, 1); // November 2026 default view
+    let selectedCalendarDateStr = null;
+
+    // Initialize App on Load
+    window.addEventListener('DOMContentLoaded', () => {
+      initTheme();
+      loadAssets();
+      setDefaultFormDates();
+      updateSyncBadge();
+    });
+
+    // =========================================================================
+    // THEME (DARK / LIGHT MODE)
+    // =========================================================================
+    function initTheme() {
+      const savedTheme = localStorage.getItem(STORAGE_KEY_THEME) || 'dark';
+      if (savedTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    }
+
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem(STORAGE_KEY_THEME, isDark ? 'dark' : 'light');
+    }
+
+    // =========================================================================
+    // DATA LOADING & GOOGLE SHEETS SYNC
+    // =========================================================================
+    async function loadAssets() {
+      const scriptUrl = localStorage.getItem(STORAGE_KEY_SCRIPT_URL);
+      const localStored = localStorage.getItem(STORAGE_KEY_ASSETS);
+
+      if (localStored) {
+        try {
+          assets = JSON.parse(localStored);
+        } catch (e) {
+          assets = [...INITIAL_SAMPLE_ASSETS];
+        }
+      } else {
+        assets = [...INITIAL_SAMPLE_ASSETS];
+        saveAssetsLocal();
+      }
+
+      refreshAllViews();
+
+      // If Google Apps Script URL is configured, fetch live rows from Google Sheets
+      if (scriptUrl) {
+        try {
+          const res = await fetch(scriptUrl);
+          const json = await res.json();
+          if (json.status === 'success' && Array.isArray(json.data) && json.data.length > 0) {
+            assets = json.data.map(row => ({
+              assetId: row['Asset ID'] || row.assetId,
+              employeeName: row['Employee Name'] || row.employeeName,
+              department: row['Department'] || row.department || 'Operations',
+              category: row['Category'] || row.category || 'Laptop',
+              itemDetails: row['Item Details'] || row.itemDetails,
+              datePurchased: formatDateISO(row['Date Purchased'] || row.datePurchased),
+              price: parseFloat(row['Price'] || row.price || 0),
+              dateReceived: formatDateISO(row['Date Received'] || row.dateReceived),
+              status: row['Status'] || row.status || 'Assigned',
+              arFileName: row['AR File Link'] && row['AR File Link'] !== 'No Attachment' ? 'View Drive AR' : '',
+              arFileUrl: row['AR File Link'] || '',
+              historyNote: row['History Note'] || ''
+            }));
+            saveAssetsLocal();
+            refreshAllViews();
+            showToast('Synced live records from Google Sheets!', 'success');
+          }
+        } catch (err) {
+          console.error('Google Sheets sync error:', err);
+          showToast('Offline / CORS notice: Showing cached local records.', 'warning');
+        }
+      }
+    }
+
+    function saveAssetsLocal() {
+      localStorage.setItem(STORAGE_KEY_ASSETS, JSON.stringify(assets));
+    }
+
+    function refreshAllViews() {
+      updateKPIs();
+      updateNextAssetTagDisplay();
+      populateAvailableDropdown();
+      renderTable();
+      renderCalendar();
+    }
+
+    // =========================================================================
+    // SEQUENTIAL ASSET ID GENERATOR (IM-0001, IM-0002, ...)
+    // =========================================================================
+    function getNextSequentialAssetId() {
+      if (!assets || assets.length === 0) return 'IM-0001';
+      let maxNum = 0;
+      assets.forEach(item => {
+        const match = String(item.assetId || '').match(/IM-(\d+)/i);
+        if (match) {
+          const num = parseInt(match[1], 10);
+          if (num > maxNum) maxNum = num;
+        }
+      });
+      const nextNum = maxNum + 1;
+      return 'IM-' + String(nextNum).padStart(4, '0');
+    }
+
+    function updateNextAssetTagDisplay() {
+      if (currentFormMode === 'new') {
+        document.getElementById('displayAssetId').textContent = getNextSequentialAssetId();
+      }
+    }
+
+    // =========================================================================
+    // FORM MODES: NEW ENTRY vs BORROW / REASSIGN EXISTING AVAILABLE UNIT
+    // =========================================================================
+    function setFormMode(mode) {
+      currentFormMode = mode;
+      const tabNew = document.getElementById('tabNewEntry');
+      const tabReassign = document.getElementById('tabReassignEntry');
+      const reassignBox = document.getElementById('reassignSelectorBox');
+      const submitBtnText = document.getElementById('submitBtnText');
+
+      if (mode === 'new') {
+        tabNew.className = 'py-2 px-3 rounded-lg text-xs sm:text-sm font-semibold transition flex items-center justify-center gap-2 bg-white dark:bg-slate-700 text-sky-600 dark:text-sky-300 shadow-sm cursor-pointer';
+        tabReassign.className = 'py-2 px-3 rounded-lg text-xs sm:text-sm font-semibold transition flex items-center justify-center gap-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white cursor-pointer';
+        reassignBox.classList.add('hidden');
+        submitBtnText.textContent = 'Save Equipment & Generate Tag';
+        resetForm(false);
+        updateNextAssetTagDisplay();
+      } else {
+        tabReassign.className = 'py-2 px-3 rounded-lg text-xs sm:text-sm font-semibold transition flex items-center justify-center gap-2 bg-white dark:bg-slate-700 text-amber-600 dark:text-amber-300 shadow-sm cursor-pointer';
+        tabNew.className = 'py-2 px-3 rounded-lg text-xs sm:text-sm font-semibold transition flex items-center justify-center gap-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white cursor-pointer';
+        reassignBox.classList.remove('hidden');
+        submitBtnText.textContent = 'Confirm Reassignment & Issue AR';
+        populateAvailableDropdown();
+        document.getElementById('displayAssetId').textContent = 'SELECT UNIT';
+        document.getElementById('status').value = 'Borrowed';
+      }
+    }
+
+    function populateAvailableDropdown() {
+      const select = document.getElementById('availableAssetSelect');
+      const availableItems = assets.filter(a => a.status === 'Available');
+      select.innerHTML = '<option value="">-- Choose available/returned unit (' + availableItems.length + ' available) --</option>';
+
+      availableItems.forEach(item => {
+        const opt = document.createElement('option');
+        opt.value = item.assetId;
+        opt.textContent = `${item.assetId} • [${item.category}] ${item.itemDetails.substring(0, 55)}...`;
+        select.appendChild(opt);
+      });
+    }
+
+    function populateFromAvailableAsset() {
+      const selectedId = document.getElementById('availableAssetSelect').value;
+      const noteEl = document.getElementById('previousCustodianNote');
+
+      if (!selectedId) {
+        document.getElementById('displayAssetId').textContent = 'SELECT UNIT';
+        noteEl.classList.add('hidden');
+        return;
+      }
+
+      const item = assets.find(a => a.assetId === selectedId);
+      if (!item) return;
+
+      document.getElementById('displayAssetId').textContent = item.assetId;
+      document.getElementById('category').value = item.category;
+      document.getElementById('itemDetails').value = item.itemDetails;
+      document.getElementById('datePurchased').value = item.datePurchased;
+      document.getElementById('price').value = item.price;
+      document.getElementById('employeeName').value = '';
+      document.getElementById('employeeName').focus();
+      document.getElementById('status').value = 'Borrowed';
+      setDefaultFormDates(true);
+
+      noteEl.textContent = `Previous Status: ${item.employeeName} — ${item.historyNote || 'Ready for reassignment.'}`;
+      noteEl.classList.remove('hidden');
+    }
+
+    function setDefaultFormDates(onlyReceived = false) {
+      const today = new Date().toISOString().split('T')[0];
+      if (!onlyReceived) {
+        document.getElementById('datePurchased').value = today;
+      }
+      document.getElementById('dateReceived').value = today;
+    }
+
+    function resetForm(resetModeToNew = true) {
+      document.getElementById('equipmentForm').reset();
+      document.getElementById('previousCustodianNote').classList.add('hidden');
+      setDefaultFormDates();
+      if (resetModeToNew && currentFormMode !== 'new') {
+        setFormMode('new');
+      } else {
+        updateNextAssetTagDisplay();
+      }
+    }
+
+    // =========================================================================
+    // FORM SUBMISSION (SAVE NEW OR REASSIGN EXISTING + DRIVE UPLOAD)
+    // =========================================================================
+    async function handleFormSubmit(e) {
+      e.preventDefault();
+
+      const submitBtn = document.getElementById('submitBtn');
+      const originalBtnHtml = submitBtn.innerHTML;
+
+      let targetAssetId = getNextSequentialAssetId();
+      let historyNote = 'Initial hardware issuance.';
+
+      if (currentFormMode === 'reassign') {
+        const chosenId = document.getElementById('availableAssetSelect').value;
+        if (!chosenId) {
+          showToast('Please select an available/returned equipment from the dropdown first.', 'error');
+          return;
+        }
+        targetAssetId = chosenId;
+        const oldAsset = assets.find(a => a.assetId === chosenId);
+        const prevHolder = oldAsset ? oldAsset.employeeName : 'IT Stock';
+        historyNote = `Reassigned/Borrowed on ${document.getElementById('dateReceived').value} (Previously: ${prevHolder}).`;
+      }
+
+      const employeeName = document.getElementById('employeeName').value.trim();
+      const department = document.getElementById('department').value;
+      const category = document.getElementById('category').value;
+      const status = document.getElementById('status').value;
+      const itemDetails = document.getElementById('itemDetails').value.trim();
+      const datePurchased = document.getElementById('datePurchased').value;
+      const price = parseFloat(document.getElementById('price').value) || 0;
+      const dateReceived = document.getElementById('dateReceived').value;
+      const fileInput = document.getElementById('arFile');
+      const file = fileInput.files[0];
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path></svg> Processing...`;
+
+      const finalizeRecord = async (base64Data = null, fileName = null) => {
+        const scriptUrl = localStorage.getItem(STORAGE_KEY_SCRIPT_URL);
+        let uploadedUrl = fileName ? '#local-preview' : '';
+
+        // Sync to Google Apps Script + Google Drive if configured
+        if (scriptUrl) {
+          try {
+            const payload = {
+              assetId: targetAssetId,
+              employeeName,
+              department,
+              category,
+              itemDetails,
+              datePurchased,
+              price,
+              dateReceived,
+              status,
+              historyNote,
+              fileData: base64Data,
+              fileName: fileName
+            };
+            const res = await fetch(scriptUrl, {
+              method: 'POST',
+              body: JSON.stringify(payload)
+            });
+            const result = await res.json();
+            if (result.status === 'success' && result.fileUrl) {
+              uploadedUrl = result.fileUrl;
+            }
+          } catch (err) {
+            console.error('Apps Script POST error:', err);
+            showToast('Saved locally; verify Google Apps Script URL for cloud sync.', 'warning');
+          }
+        }
+
+        const recordObj = {
+          assetId: targetAssetId,
+          employeeName,
+          department,
+          category,
+          itemDetails,
+          datePurchased,
+          price,
+          dateReceived,
+          status,
+          arFileName: fileName || '',
+          arFileUrl: uploadedUrl,
+          historyNote
+        };
+
+        // Update existing or push new
+        const existingIdx = assets.findIndex(a => a.assetId === targetAssetId);
+        if (existingIdx >= 0) {
+          assets[existingIdx] = recordObj;
+        } else {
+          assets.push(recordObj);
+        }
+
+        saveAssetsLocal();
+        refreshAllViews();
+        resetForm(true);
+
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnHtml;
+        showToast(`Asset ${targetAssetId} saved & assigned to ${employeeName}!`, 'success');
+      };
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = () => finalizeRecord(reader.result, file.name);
+        reader.readAsDataURL(file);
+      } else {
+        finalizeRecord();
+      }
+    }
+
+    // =========================================================================
+    // MARK AS RETURNED (SO ANOTHER EMPLOYEE CAN BORROW IT)
+    // =========================================================================
+    function markAsReturned(assetId) {
+      const idx = assets.findIndex(a => a.assetId === assetId);
+      if (idx === -1) return;
+
+      const prevEmp = assets[idx].employeeName;
+      const todayStr = new Date().toISOString().split('T')[0];
+
+      assets[idx].status = 'Available';
+      assets[idx].employeeName = `Unassigned (Returned by ${prevEmp.replace(/^Unassigned\s*\(|\)$/g, '')})`;
+      assets[idx].dateReceived = todayStr;
+      assets[idx].historyNote = `Returned to IT custody on ${todayStr} by ${prevEmp}. Ready for reassignment.`;
+
+      saveAssetsLocal();
+      refreshAllViews();
+      showToast(`${assetId} marked as Available/Returned. Ready in Borrow dropdown!`, 'info');
+    }
+
+    // =========================================================================
+    // KPI METRICS & TABLE RENDERING
+    // =========================================================================
+    function updateKPIs() {
+      const total = assets.length;
+      const assigned = assets.filter(a => a.status === 'Assigned' || a.status === 'Borrowed').length;
+      const available = assets.filter(a => a.status === 'Available').length;
+      const totalVal = assets.reduce((sum, item) => sum + (Number(item.price) || 0), 0);
+
+      document.getElementById('kpiTotal').textContent = total;
+      document.getElementById('kpiAssigned').textContent = assigned;
+      document.getElementById('kpiAvailable').textContent = available;
+      document.getElementById('kpiValue').textContent = formatPHP(totalVal);
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById('equipmentTableBody');
+      const query = document.getElementById('searchInput').value.toLowerCase().trim();
+      const catFilter = document.getElementById('filterCategory').value;
+      const statusFilter = document.getElementById('filterStatus').value;
+
+      const filtered = assets.filter(item => {
+        const matchesQuery =
+          item.assetId.toLowerCase().includes(query) ||
+          item.employeeName.toLowerCase().includes(query) ||
+          item.itemDetails.toLowerCase().includes(query) ||
+          item.department.toLowerCase().includes(query);
+
+        const matchesCat = catFilter === 'ALL' || item.category === catFilter;
+        const matchesStatus = statusFilter === 'ALL' || item.status === statusFilter;
+        const matchesDate = !selectedCalendarDateStr ||
+          item.dateReceived === selectedCalendarDateStr ||
+          item.datePurchased === selectedCalendarDateStr;
+
+        return matchesQuery && matchesCat && matchesStatus && matchesDate;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="8" class="py-10 text-center text-slate-500 dark:text-slate-400">
+              No equipment records match your current search or filter criteria.
+            </td>
+          </tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(item => {
+        const statusBadge = getStatusBadgeHtml(item.status);
+        const arCell = item.arFileName
+          ? `<a href="${item.arFileUrl && item.arFileUrl !== '#' && item.arFileUrl !== '#local-preview' ? item.arFileUrl : 'javascript:void(0)'}"
+                ${item.arFileUrl && item.arFileUrl.startsWith('http') ? 'target="_blank"' : `onclick="showToast('Attached file: ${escapeHtml(item.arFileName)} (Connect Google Drive URL for cloud link)', 'info')"`}
+                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium bg-sky-500/15 text-sky-600 dark:text-sky-300 hover:bg-sky-500/25 transition">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" /></svg>
+                ${escapeHtml(item.arFileName.length > 18 ? item.arFileName.substring(0, 16) + '...' : item.arFileName)}
+             </a>`
+          : `<span class="text-xs text-slate-400 italic">No file attached</span>`;
+
+        const actionBtn = item.status !== 'Available'
+          ? `<button onclick="markAsReturned('${item.assetId}')" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-amber-500/15 text-amber-600 dark:text-amber-300 hover:bg-amber-500/25 transition cursor-pointer" title="Mark unit as returned so another employee can borrow it">
+               Return
+             </button>`
+          : `<button onclick="quickBorrow('${item.assetId}')" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500/15 text-emerald-600 dark:text-emerald-300 hover:bg-emerald-500/25 transition cursor-pointer" title="Assign/Borrow this available unit">
+               Borrow
+             </button>`;
+
+        return `
+          <tr class="hover:bg-slate-200/35 dark:hover:bg-slate-800/45 transition">
+            <td class="py-3.5 px-4 align-top">
+              <span class="font-mono font-bold text-xs sm:text-sm px-2.5 py-1 rounded-lg bg-indigo-500/15 text-indigo-600 dark:text-indigo-300 border border-indigo-500/25">
+                ${escapeHtml(item.assetId)}
+              </span>
+            </td>
+            <td class="py-3.5 px-4 align-top">
+              <div class="font-semibold text-slate-900 dark:text-slate-100">${escapeHtml(item.employeeName)}</div>
+              <div class="text-xs text-slate-500 dark:text-slate-400">${escapeHtml(item.department)}</div>
+            </td>
+            <td class="py-3.5 px-4 align-top max-w-xs">
+              <span class="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 mb-1">
+                ${escapeHtml(item.category)}
+              </span>
+              <p class="text-xs text-slate-700 dark:text-slate-300 leading-snug">${escapeHtml(item.itemDetails)}</p>
+            </td>
+            <td class="py-3.5 px-4 align-top text-xs whitespace-nowrap">
+              <div><span class="text-slate-400">Purch:</span> <span class="font-mono">${escapeHtml(item.datePurchased)}</span></div>
+              <div class="mt-0.5"><span class="text-slate-400">Recv:</span> <span class="font-mono font-semibold text-emerald-600 dark:text-emerald-400">${escapeHtml(item.dateReceived)}</span></div>
+            </td>
+            <td class="py-3.5 px-4 align-top font-mono text-xs font-semibold whitespace-nowrap">
+              ${formatPHP(item.price)}
+            </td>
+            <td class="py-3.5 px-4 align-top whitespace-nowrap">
+              ${statusBadge}
+            </td>
+            <td class="py-3.5 px-4 align-top whitespace-nowrap">
+              ${arCell}
+            </td>
+            <td class="py-3.5 px-4 align-top text-right whitespace-nowrap">
+              <div class="inline-flex items-center gap-1.5">
+                <button onclick="openPrintARModal('${item.assetId}')" class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-sky-500/15 text-sky-600 dark:text-sky-300 hover:bg-sky-500/25 border border-sky-500/25 inline-flex items-center gap-1 transition cursor-pointer" title="Print Official Acknowledgement Receipt">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                  </svg>
+                  Print AR
+                </button>
+                ${actionBtn}
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function quickBorrow(assetId) {
+      setFormMode('reassign');
+      document.getElementById('availableAssetSelect').value = assetId;
+      populateFromAvailableAsset();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      showToast(`Selected ${assetId} for borrowing. Enter employee name below.`, 'info');
+    }
+
+    function getStatusBadgeHtml(status) {
+      if (status === 'Assigned') {
+        return `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/15 text-emerald-600 dark:text-emerald-300 border border-emerald-500/25"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Assigned</span>`;
+      }
+      if (status === 'Borrowed') {
+        return `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-indigo-500/15 text-indigo-600 dark:text-indigo-300 border border-indigo-500/25"><span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>Borrowed</span>`;
+      }
+      return `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-500/15 text-amber-600 dark:text-amber-300 border border-amber-500/25"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>Available</span>`;
+    }
+
+    // =========================================================================
+    // INTERACTIVE CALENDAR WIDGET
+    // =========================================================================
+    function renderCalendar() {
+      const year = calendarDate.getFullYear();
+      const month = calendarDate.getMonth();
+      const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      document.getElementById('calendarMonthYear').textContent = `${monthNames[month]} ${year}`;
+
+      const firstDayIndex = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const grid = document.getElementById('calendarGrid');
+      grid.innerHTML = '';
+
+      // Empty cells before 1st day
+      for (let i = 0; i < firstDayIndex; i++) {
+        grid.innerHTML += `<div class="p-2"></div>`;
+      }
+
+      const todayStr = new Date().toISOString().split('T')[0];
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        const hasReceived = assets.some(a => a.dateReceived === dateStr);
+        const hasPurchased = assets.some(a => a.datePurchased === dateStr);
+        const isSelected = selectedCalendarDateStr === dateStr;
+        const isToday = dateStr === todayStr;
+
+        let classes = 'relative p-2 rounded-xl text-xs font-semibold transition cursor-pointer flex flex-col items-center justify-center ';
+        if (isSelected) {
+          classes += 'bg-sky-500 text-white shadow-md shadow-sky-500/30 ';
+        } else if (isToday) {
+          classes += 'border border-sky-500 bg-sky-500/10 text-sky-600 dark:text-sky-300 ';
+        } else {
+          classes += 'hover:bg-slate-200/70 dark:hover:bg-slate-800/80 text-slate-700 dark:text-slate-300 ';
+        }
+
+        let dots = '';
+        if (hasReceived || hasPurchased) {
+          dots = `<div class="flex items-center gap-0.5 mt-0.5">
+            ${hasReceived ? '<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>' : ''}
+            ${hasPurchased ? '<span class="w-1.5 h-1.5 rounded-full bg-sky-400"></span>' : ''}
+          </div>`;
+        }
+
+        grid.innerHTML += `
+          <button type="button" onclick="selectCalendarDate('${dateStr}')" class="${classes}">
+            <span>${day}</span>
+            ${dots}
+          </button>
+        `;
+      }
+    }
+
+    function changeMonth(delta) {
+      calendarDate.setMonth(calendarDate.getMonth() + delta);
+      renderCalendar();
+    }
+
+    function goToToday() {
+      calendarDate = new Date();
+      const todayStr = calendarDate.toISOString().split('T')[0];
+      selectCalendarDate(todayStr);
+    }
+
+    function selectCalendarDate(dateStr) {
+      selectedCalendarDateStr = dateStr;
+      renderCalendar();
+      renderTable();
+
+      document.getElementById('selectedDateTitle').textContent = `Activity on ${dateStr}`;
+      document.getElementById('clearDateFilterBtn').classList.remove('hidden');
+
+      const matching = assets.filter(a => a.dateReceived === dateStr || a.datePurchased === dateStr);
+      const listEl = document.getElementById('calendarEventList');
+
+      if (matching.length === 0) {
+        listEl.innerHTML = `<p class="text-slate-500 dark:text-slate-400 italic">No equipment purchases or releases logged on this date.</p>`;
+        return;
+      }
+
+      listEl.innerHTML = matching.map(item => {
+        const typeLabel = item.dateReceived === dateStr
+          ? `<span class="text-emerald-500 font-bold">[Issued/Recv]</span>`
+          : `<span class="text-sky-500 font-bold">[Purchased]</span>`;
+        return `
+          <div class="p-2 rounded-lg bg-slate-200/50 dark:bg-slate-800/60 flex items-center justify-between gap-2">
+            <div>
+              ${typeLabel} <span class="font-mono font-bold">${item.assetId}</span> — ${escapeHtml(item.employeeName)}
+              <div class="text-[11px] text-slate-500 dark:text-slate-400">${escapeHtml(item.category)}: ${escapeHtml(item.itemDetails.substring(0, 42))}...</div>
+            </div>
+            <button onclick="openPrintARModal('${item.assetId}')" class="px-2 py-1 rounded bg-sky-500/20 text-sky-600 dark:text-sky-300 font-semibold text-[11px] shrink-0 cursor-pointer">
+              AR
+            </button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function clearDateFilter() {
+      selectedCalendarDateStr = null;
+      document.getElementById('selectedDateTitle').textContent = 'Select a date to view logs';
+      document.getElementById('clearDateFilterBtn').classList.add('hidden');
+      document.getElementById('calendarEventList').innerHTML = `<p class="text-slate-500 dark:text-slate-400 italic">Click any highlighted day on the calendar to inspect asset handovers or purchases.</p>`;
+      renderCalendar();
+      renderTable();
+    }
+
+    // =========================================================================
+    // PRINTABLE ACKNOWLEDGEMENT RECEIPT (AR) MODAL
+    // =========================================================================
+    function openPrintARModal(assetId) {
+      const item = assets.find(a => a.assetId === assetId);
+      if (!item) return;
+
+      document.getElementById('arAssetId').textContent = item.assetId;
+      document.getElementById('arDateIssued').textContent = item.dateReceived;
+      document.getElementById('arIssuanceType').textContent = `${item.category} • ${item.status}`;
+      document.getElementById('arEmployeeName').textContent = item.employeeName;
+      document.getElementById('arDepartment').textContent = item.department;
+      document.getElementById('arCategory').textContent = item.category;
+      document.getElementById('arStatus').textContent = item.status;
+
+      document.getElementById('arTableTag').textContent = item.assetId;
+      document.getElementById('arTableCat').textContent = item.category;
+      document.getElementById('arTableDesc').textContent = item.itemDetails;
+      document.getElementById('arTablePurch').textContent = item.datePurchased;
+      document.getElementById('arTablePrice').textContent = formatPHP(item.price);
+
+      document.getElementById('arSignEmployee').textContent = item.employeeName;
+      document.getElementById('arSignDate').textContent = item.dateReceived;
+
+      const histBox = document.getElementById('arHistoryBox');
+      if (item.historyNote) {
+        document.getElementById('arHistoryText').textContent = item.historyNote;
+        histBox.classList.remove('hidden');
+      } else {
+        histBox.classList.add('hidden');
+      }
+
+      document.getElementById('printAreaModal').classList.remove('hidden');
+    }
+
+    function closePrintModal() {
+      document.getElementById('printAreaModal').classList.add('hidden');
+    }
+
+    // =========================================================================
+    // CONFIGURATION & APPS SCRIPT MODALS
+    // =========================================================================
+    function openConfigModal() {
+      document.getElementById('scriptUrlInput').value = localStorage.getItem(STORAGE_KEY_SCRIPT_URL) || '';
+      document.getElementById('configModal').classList.remove('hidden');
+    }
+
+    function closeConfigModal() {
+      document.getElementById('configModal').classList.add('hidden');
+    }
+
+    function saveScriptUrl() {
+      const url = document.getElementById('scriptUrlInput').value.trim();
+      if (url) {
+        localStorage.setItem(STORAGE_KEY_SCRIPT_URL, url);
+        showToast('Google Apps Script URL saved! Syncing...', 'success');
+      } else {
+        localStorage.removeItem(STORAGE_KEY_SCRIPT_URL);
+        showToast('Switched to Local Demo Mode.', 'info');
+      }
+      updateSyncBadge();
+      closeConfigModal();
+      loadAssets();
+    }
+
+    function updateSyncBadge() {
+      const url = localStorage.getItem(STORAGE_KEY_SCRIPT_URL);
+      const dot = document.getElementById('syncDot');
+      const label = document.getElementById('syncLabel');
+      if (url) {
+        dot.className = 'w-2 h-2 rounded-full bg-emerald-400';
+        label.textContent = 'Google Sheets Connected';
+      } else {
+        dot.className = 'w-2 h-2 rounded-full bg-amber-400 animate-pulse';
+        label.textContent = 'Local Demo Mode';
+      }
+    }
+
+    function resetDemoData() {
+      assets = [...INITIAL_SAMPLE_ASSETS];
+      saveAssetsLocal();
+      refreshAllViews();
+      closeConfigModal();
+      showToast('Sample IM-0001 to IM-0005 dataset restored.', 'info');
+    }
+
+    function openScriptModal() {
+      document.getElementById('scriptModal').classList.remove('hidden');
+    }
+
+    function closeScriptModal() {
+      document.getElementById('scriptModal').classList.add('hidden');
+    }
+
+    function copyAppsScriptCode() {
+      const codeText = document.getElementById('appsScriptCodeBlock').innerText;
+      const tempTextArea = document.createElement('textarea');
+      tempTextArea.value = codeText;
+      document.body.appendChild(tempTextArea);
+      tempTextArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(tempTextArea);
+      showToast('Apps Script backend code copied to clipboard!', 'success');
+    }
+
+    // =========================================================================
+    // CSV EXPORT & UTILITIES
+    // =========================================================================
+    function exportCSV() {
+      const headers = ['Asset ID', 'Employee Name', 'Department', 'Category', 'Item Details', 'Date Purchased', 'Price', 'Date Received', 'Status', 'AR File'];
+      const rows = assets.map(a => [
+        a.assetId,
+        `"${(a.employeeName || '').replace(/"/g, '""')}"`,
+        `"${(a.department || '').replace(/"/g, '""')}"`,
+        a.category,
+        `"${(a.itemDetails || '').replace(/"/g, '""')}"`,
+        a.datePurchased,
+        a.price,
+        a.dateReceived,
+        a.status,
+        `"${(a.arFileName || 'None').replace(/"/g, '""')}"`
+      ]);
+
+      const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement('a');
+      link.setAttribute('href', encodedUri);
+      link.setAttribute('download', `iMerch_IT_Equipment_Ledger_${new Date().toISOString().split('T')[0]}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast('Equipment inventory exported to CSV!', 'success');
+    }
+
+    function formatPHP(amount) {
+      return '₱' + Number(amount || 0).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function formatDateISO(val) {
+      if (!val) return '';
+      if (/^\d{4}-\d{2}-\d{2}$/.test(val)) return val;
+      const d = new Date(val);
+      return isNaN(d.getTime()) ? String(val) : d.toISOString().split('T')[0];
+    }
+
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      const colors = {
+        success: 'border-emerald-500/40 bg-emerald-950/90 text-emerald-200',
+        error: 'border-rose-500/40 bg-rose-950/90 text-rose-200',
+        warning: 'border-amber-500/40 bg-amber-950/90 text-amber-200',
+        info: 'border-sky-500/40 bg-slate-900/95 text-sky-200'
+      };
+      const toast = document.createElement('div');
+      toast.className = `pointer-events-auto px-4 py-3 rounded-xl border backdrop-blur-md shadow-xl text-xs font-semibold flex items-center gap-2.5 transition-all duration-300 ${colors[type] || colors.info}`;
+      toast.innerHTML = `<span>${escapeHtml(message)}</span>`;
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(-8px)';
+        setTimeout(() => toast.remove(), 300);
+      }, 3600);
+    }
+  </script>
+</body>
+</html>
