@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>iMerch Media Inc. | I.T. Equipment & Asset Management System</title>
+  <title>iMerch Media Inc. | I.T. Equipment &amp; Asset Management System</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -33,7 +33,6 @@
     };
   </script>
   <style>
-    /* Base Glassmorphism & Theme Backgrounds */
     :root {
       --bg-gradient: radial-gradient(circle at 12% 18%, rgba(56, 189, 248, 0.16), transparent 36%),
                      radial-gradient(circle at 88% 12%, rgba(99, 102, 241, 0.15), transparent 40%),
@@ -84,7 +83,6 @@
       box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.22);
     }
 
-    /* Custom Scrollbar */
     ::-webkit-scrollbar {
       width: 7px;
       height: 7px;
@@ -100,7 +98,6 @@
       background: rgba(148, 163, 184, 0.55);
     }
 
-    /* Print Styles for Official A4 Acknowledgement Receipt */
     @media print {
       body * {
         visibility: hidden;
@@ -138,45 +135,43 @@
 </head>
 <body class="text-slate-800 dark:text-slate-100 antialiased selection:bg-sky-500 selection:text-white">
 
-  <!-- Toast Notification Banner -->
   <div id="toastContainer" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
-  <!-- Top Glass Navigation Bar -->
+  <!-- Top Navigation Header -->
   <header class="sticky top-0 z-30 glass-panel border-x-0 border-t-0 rounded-none">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3">
-      <!-- Brand Identity -->
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-500 to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-sky-500/25">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
-          </svg>
-        </div>
-        <div>
+      <div class="flex items-center gap-3 min-w-0">
+        <!-- Theme-aware iMerch Logo (Light = imerchlogo.jpg, Dark = imerchlogowhite1.jpg) -->
+        <img
+          id="headerBrandLogo"
+          src="imerchlogowhite1.jpg"
+          alt="iMerch Media Inc."
+          class="h-8 sm:h-9 w-auto object-contain shrink-0"
+        />
+        <div class="hidden sm:block h-6 w-px bg-slate-300 dark:bg-slate-700"></div>
+        <div class="truncate">
           <div class="flex items-center gap-2">
-            <h1 class="text-base sm:text-lg font-extrabold tracking-tight bg-gradient-to-r from-sky-500 to-indigo-500 dark:from-sky-400 dark:to-indigo-400 bg-clip-text text-transparent">
-              iMerch Media Inc.
-            </h1>
-            <span class="hidden sm:inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-mono font-semibold uppercase tracking-wider bg-sky-500/15 text-sky-600 dark:text-sky-300 border border-sky-500/25">
+            <span class="text-xs sm:text-sm font-bold tracking-tight text-slate-800 dark:text-slate-100 truncate">
+              I.T. Equipment &amp; Asset System
+            </span>
+            <span class="hidden md:inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-mono font-semibold uppercase tracking-wider bg-sky-500/15 text-sky-600 dark:text-sky-300 border border-sky-500/25">
               IT Asset Core
             </span>
           </div>
-          <p class="text-xs text-slate-500 dark:text-slate-400">Equipment Registry &amp; Acknowledgement Receipt System</p>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400 truncate">Equipment Registry &amp; Acknowledgement Receipt System</p>
         </div>
       </div>
 
-      <!-- Header Actions -->
-      <div class="flex items-center gap-2 sm:gap-3">
-        <!-- Connection Mode Pill -->
+      <div class="flex items-center gap-2 sm:gap-3 shrink-0">
         <button onclick="openConfigModal()" id="syncStatusBtn" class="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-medium glass-input hover:border-sky-400 transition cursor-pointer" title="Configure Google Sheets & Drive Backend">
           <span id="syncDot" class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-          <span id="syncLabel" class="hidden md:inline">Local Demo Mode</span>
+          <span id="syncLabel" class="hidden md:inline">Connecting...</span>
           <svg class="w-4 h-4 text-slate-500 dark:text-slate-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
             <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
           </svg>
         </button>
 
-        <!-- Apps Script Code Viewer Button -->
         <button onclick="openScriptModal()" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-indigo-500/15 hover:bg-indigo-500/25 text-indigo-600 dark:text-indigo-300 border border-indigo-500/25 transition cursor-pointer" title="View Google Apps Script Backend Code">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
@@ -184,13 +179,10 @@
           <span class="hidden sm:inline">Apps Script</span>
         </button>
 
-        <!-- Dark / Light Theme Toggle -->
         <button onclick="toggleTheme()" id="themeToggleBtn" class="p-2.5 rounded-xl glass-input hover:border-sky-400 transition cursor-pointer" title="Toggle Dark / Light Mode">
-          <!-- Sun Icon (shown in dark mode) -->
           <svg id="iconSun" class="w-4 h-4 text-amber-400 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
           </svg>
-          <!-- Moon Icon (shown in light mode) -->
           <svg id="iconMoon" class="w-4 h-4 text-slate-700 block dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
           </svg>
@@ -199,7 +191,6 @@
     </div>
   </header>
 
-  <!-- Main Workspace -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
 
     <!-- KPI Summary Cards -->
@@ -257,10 +248,10 @@
       </div>
     </section>
 
-    <!-- Upper Workspace Grid: Registration/Reassign Form (Left) + Interactive Asset Calendar (Right) -->
+    <!-- Upper Workspace Grid -->
     <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-      <!-- Left Column (7 cols): Equipment Registration & Reassignment Form -->
+      <!-- Left Column (7 cols): Equipment Custody & Issuance Form -->
       <div class="lg:col-span-7 glass-panel rounded-2xl p-5 sm:p-6">
         <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-200/60 dark:border-slate-700/60">
           <div>
@@ -268,17 +259,15 @@
               <span class="w-2.5 h-2.5 rounded-full bg-sky-500"></span>
               Equipment Custody &amp; Issuance Form
             </h2>
-            <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Register new IT hardware or reassign returned units to borrowing staff</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Borrowers sync to <code class="font-mono text-sky-500">Borrow_Return_Log</code>; logs &amp; returns sync to <code class="font-mono text-indigo-400">Equipment_Logs</code></p>
           </div>
 
-          <!-- Active Tag Pill -->
           <div class="px-3 py-1.5 rounded-xl bg-sky-500/15 border border-sky-500/30 flex items-center gap-2">
             <span class="text-[11px] uppercase tracking-wider font-semibold text-slate-500 dark:text-slate-400">Asset Tag:</span>
             <span id="displayAssetId" class="font-mono font-bold text-sm text-sky-600 dark:text-sky-300">IM-0001</span>
           </div>
         </div>
 
-        <!-- Mode Switcher Tabs: New Equipment vs Borrow/Reassign Existing -->
         <div class="grid grid-cols-2 gap-2 p-1 rounded-xl bg-slate-200/70 dark:bg-slate-800/80 my-4">
           <button type="button" id="tabNewEntry" onclick="setFormMode('new')" class="py-2 px-3 rounded-lg text-xs sm:text-sm font-semibold transition flex items-center justify-center gap-2 bg-white dark:bg-slate-700 text-sky-600 dark:text-sky-300 shadow-sm cursor-pointer">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -295,18 +284,17 @@
         </div>
 
         <form id="equipmentForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
-          <!-- Reassign Dropdown Banner (Visible only in 'reassign' mode) -->
           <div id="reassignSelectorBox" class="hidden p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 space-y-2">
             <label for="availableAssetSelect" class="block text-xs font-bold uppercase tracking-wider text-amber-700 dark:text-amber-300">
               Select Available / Returned Equipment to Borrow or Reassign
             </label>
             <select id="availableAssetSelect" onchange="populateFromAvailableAsset()" class="w-full rounded-xl px-3.5 py-2.5 text-sm glass-input font-medium">
-              <option value="">-- Choose available unit (e.g., returned laptop) --</option>
+              <option value="">-- Choose available unit --</option>
             </select>
             <p id="previousCustodianNote" class="text-[11px] text-slate-600 dark:text-slate-300 italic hidden"></p>
           </div>
 
-          <!-- Row 1: Employee Name & Department -->
+          <!-- Row 1: Employee Name & Position -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label for="employeeName" class="block text-xs font-semibold mb-1.5 text-slate-700 dark:text-slate-300">
@@ -314,6 +302,16 @@
               </label>
               <input type="text" id="employeeName" required placeholder="e.g., Juan Dela Cruz" class="w-full rounded-xl px-3.5 py-2.5 text-sm glass-input" />
             </div>
+            <div>
+              <label for="position" class="block text-xs font-semibold mb-1.5 text-slate-700 dark:text-slate-300">
+                Position / Designation <span class="text-rose-500">*</span>
+              </label>
+              <input type="text" id="position" required placeholder="e.g., Multimedia Specialist, IT Support" class="w-full rounded-xl px-3.5 py-2.5 text-sm glass-input" />
+            </div>
+          </div>
+
+          <!-- Row 2: Department & Serial Number -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label for="department" class="block text-xs font-semibold mb-1.5 text-slate-700 dark:text-slate-300">
                 Department / Team <span class="text-rose-500">*</span>
@@ -328,9 +326,15 @@
                 <option value="Operations">Operations</option>
               </select>
             </div>
+            <div>
+              <label for="serialNumber" class="block text-xs font-semibold mb-1.5 text-slate-700 dark:text-slate-300">
+                Serial Number
+              </label>
+              <input type="text" id="serialNumber" placeholder="Enter equipment serial number" class="w-full rounded-xl px-3.5 py-2.5 text-sm glass-input font-mono" />
+            </div>
           </div>
 
-          <!-- Row 2: Equipment Category & Status -->
+          <!-- Row 3: Equipment Category & Status -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label for="category" class="block text-xs font-semibold mb-1.5 text-slate-700 dark:text-slate-300">
@@ -353,21 +357,21 @@
               </label>
               <select id="status" required class="w-full rounded-xl px-3.5 py-2.5 text-sm glass-input">
                 <option value="Assigned">Assigned (Active Custody)</option>
-                <option value="Borrowed">Borrowed (Temporary Issuance)</option>
+                <option value="Borrowed">Borrowed (Goes to Borrow_Return_Log)</option>
                 <option value="Available">Available / In IT Stock</option>
               </select>
             </div>
           </div>
 
-          <!-- Row 3: Item Details -->
+          <!-- Row 4: Item Details -->
           <div>
             <label for="itemDetails" class="block text-xs font-semibold mb-1.5 text-slate-700 dark:text-slate-300">
-              Item Details (Brand, Model, Specs, Serial Number) <span class="text-rose-500">*</span>
+              Item Details (Brand, Model, Specs, Accessories) <span class="text-rose-500">*</span>
             </label>
-            <textarea id="itemDetails" rows="2" required placeholder="e.g., Apple MacBook Pro 14 M3 | 16GB RAM / 512GB SSD | S/N: C02ZN123MD6R + Charger" class="w-full rounded-xl px-3.5 py-2 text-sm glass-input"></textarea>
+            <textarea id="itemDetails" rows="2" required placeholder="Brand, model, specifications, and included accessories" class="w-full rounded-xl px-3.5 py-2 text-sm glass-input"></textarea>
           </div>
 
-          <!-- Row 4: Date Purchased, Price, Date Received -->
+          <!-- Row 5: Date Purchased, Price, Date Received -->
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
               <label for="datePurchased" class="block text-xs font-semibold mb-1.5 text-slate-700 dark:text-slate-300">
@@ -379,7 +383,7 @@
               <label for="price" class="block text-xs font-semibold mb-1.5 text-slate-700 dark:text-slate-300">
                 Price (PHP ₱) <span class="text-rose-500">*</span>
               </label>
-              <input type="number" id="price" step="0.01" min="0" required placeholder="45000.00" class="w-full rounded-xl px-3.5 py-2.5 text-sm glass-input font-mono" />
+              <input type="number" id="price" step="0.01" min="0" required placeholder="0.00" class="w-full rounded-xl px-3.5 py-2.5 text-sm glass-input font-mono" />
             </div>
             <div>
               <label for="dateReceived" class="block text-xs font-semibold mb-1.5 text-slate-700 dark:text-slate-300">
@@ -389,7 +393,7 @@
             </div>
           </div>
 
-          <!-- Row 5: Acknowledgement Receipt (AR) Attachment -->
+          <!-- Row 6: Acknowledgement Receipt (AR) Attachment -->
           <div>
             <label for="arFile" class="block text-xs font-semibold mb-1.5 text-slate-700 dark:text-slate-300">
               Attach Signed Acknowledgement Receipt (PDF / JPG / PNG)
@@ -400,7 +404,6 @@
             </div>
           </div>
 
-          <!-- Submit & Reset Buttons -->
           <div class="pt-2 flex flex-wrap items-center justify-end gap-3">
             <button type="button" onclick="resetForm()" class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold glass-input hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition cursor-pointer">
               Clear Form
@@ -441,7 +444,6 @@
             </div>
           </div>
 
-          <!-- Month / Year Header -->
           <div class="flex items-center justify-between my-3">
             <h3 id="calendarMonthYear" class="text-sm font-bold text-slate-800 dark:text-slate-100">November 2026</h3>
             <div class="flex items-center gap-3 text-[11px]">
@@ -450,16 +452,13 @@
             </div>
           </div>
 
-          <!-- Weekday Headers -->
           <div class="grid grid-cols-7 gap-1 text-center text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">
             <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
           </div>
 
-          <!-- Calendar Days Grid -->
           <div id="calendarGrid" class="grid grid-cols-7 gap-1.5 text-center"></div>
         </div>
 
-        <!-- Selected Date Event Inspector -->
         <div class="mt-4 pt-3 border-t border-slate-200/60 dark:border-slate-700/60">
           <div class="flex items-center justify-between mb-2">
             <span id="selectedDateTitle" class="text-xs font-bold uppercase tracking-wider text-sky-600 dark:text-sky-400">
@@ -489,13 +488,12 @@
           </p>
         </div>
 
-        <!-- Search & Filter Controls -->
         <div class="flex flex-wrap items-center gap-2.5">
           <div class="relative flex-1 sm:w-64">
             <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
-            <input type="text" id="searchInput" oninput="renderTable()" placeholder="Search IM-0001, employee, item..." class="w-full rounded-xl pl-9 pr-3.5 py-2 text-xs sm:text-sm glass-input" />
+            <input type="text" id="searchInput" oninput="renderTable()" placeholder="Search IM-0001, employee, position..." class="w-full rounded-xl pl-9 pr-3.5 py-2 text-xs sm:text-sm glass-input" />
           </div>
 
           <select id="filterCategory" onchange="renderTable()" class="rounded-xl px-3 py-2 text-xs sm:text-sm glass-input">
@@ -526,13 +524,12 @@
         </div>
       </div>
 
-      <!-- Responsive Equipment Table -->
       <div class="overflow-x-auto rounded-xl border border-slate-200/60 dark:border-slate-700/60">
         <table class="w-full text-left border-collapse">
           <thead>
             <tr class="bg-slate-200/60 dark:bg-slate-800/80 text-[11px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300">
               <th class="py-3.5 px-4">Asset ID</th>
-              <th class="py-3.5 px-4">Employee &amp; Dept</th>
+              <th class="py-3.5 px-4">Employee, Position &amp; Dept</th>
               <th class="py-3.5 px-4">Category &amp; Item Details</th>
               <th class="py-3.5 px-4">Dates (Purch / Recv)</th>
               <th class="py-3.5 px-4">Price</th>
@@ -541,20 +538,15 @@
               <th class="py-3.5 px-4 text-right">Actions</th>
             </tr>
           </thead>
-          <tbody id="equipmentTableBody" class="divide-y divide-slate-200/50 dark:divide-slate-700/50 text-xs sm:text-sm">
-            <!-- Dynamically populated -->
-          </tbody>
+          <tbody id="equipmentTableBody" class="divide-y divide-slate-200/50 dark:divide-slate-700/50 text-xs sm:text-sm"></tbody>
         </table>
       </div>
     </section>
   </main>
 
-  <!-- ===================================================================== -->
-  <!-- MODAL 1: PRINTABLE OFFICIAL ACKNOWLEDGEMENT RECEIPT (AR) PREVIEW      -->
-  <!-- ===================================================================== -->
+  <!-- MODAL 1: PRINTABLE OFFICIAL ACKNOWLEDGEMENT RECEIPT (AR) PREVIEW -->
   <div id="printAreaModal" class="fixed inset-0 z-50 hidden bg-slate-950/75 backdrop-blur-sm overflow-y-auto p-4 sm:p-8 flex items-start justify-center">
     <div class="w-full max-w-3xl space-y-4 my-auto">
-      <!-- Top Action Bar (Hidden during print) -->
       <div class="no-print glass-panel rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3">
         <div class="flex items-center gap-2">
           <span class="w-3 h-3 rounded-full bg-sky-500"></span>
@@ -573,53 +565,56 @@
         </div>
       </div>
 
-      <!-- Formal Paper Sheet (Always clean white for printing) -->
       <div id="arPrintableSheet" class="bg-white text-slate-900 rounded-xl shadow-2xl p-6 sm:p-10 border border-slate-300">
-        <!-- Letterhead -->
         <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b-2 border-slate-900 pb-4 gap-4">
-          <div>
-            <h1 class="text-2xl font-extrabold tracking-tight text-slate-900 uppercase">iMerch Media Inc.</h1>
-            <p class="text-xs font-semibold tracking-wider text-slate-600 uppercase">Information Technology &amp; Systems Department</p>
-            <p class="text-[11px] text-slate-500 mt-0.5">Metro Manila, Philippines • IT Asset Management Unit</p>
+          <div class="flex items-center gap-3.5">
+            <!-- Theme-aware AR Logo (Light = imerchlogoblack.jpg, Dark = imerchlogowhite1.jpg) -->
+            <img
+              id="arBrandLogo"
+              src="imerchlogoblack.jpg"
+              alt="iMerch Media Inc."
+              class="h-11 sm:h-12 w-auto object-contain shrink-0"
+            />
+            <div>
+              <p class="text-xs font-bold tracking-wider text-slate-700 uppercase">Information Technology &amp; Systems Department</p>
+              <p class="text-[11px] text-slate-500 mt-0.5">Mandaluyong City, Metro Manila, Philippines • IT Asset Management Unit</p>
+            </div>
           </div>
           <div class="sm:text-right">
             <div class="inline-block border-2 border-slate-900 px-3 py-1 rounded">
               <span class="block text-[10px] font-bold uppercase tracking-widest text-slate-500">Asset Control Tag</span>
               <span id="arAssetId" class="font-mono text-lg font-extrabold text-slate-900">IM-0001</span>
             </div>
-            <p class="text-xs text-slate-600 mt-1.5">Date Issued: <strong id="arDateIssued">2026-11-23</strong></p>
+            <p class="text-xs text-slate-600 mt-1.5">Date Issued: <strong id="arDateIssued"></strong></p>
           </div>
         </div>
 
-        <!-- Document Title -->
         <div class="text-center my-6">
           <h2 class="text-lg font-extrabold uppercase tracking-widest text-slate-900 underline underline-offset-4">
             I.T. Equipment Acknowledgement Receipt
           </h2>
-          <p class="text-xs text-slate-600 mt-1">Official Accountability &amp; Custody Form (<span id="arIssuanceType">Assigned Hardware</span>)</p>
+          <p class="text-xs text-slate-600 mt-1">Official Accountability &amp; Custody Form (<span id="arIssuanceType"></span>)</p>
         </div>
 
-        <!-- Employee & Custodian Information Box -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 border border-slate-300 rounded-lg p-4 bg-slate-50 text-xs mb-6">
           <div>
             <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Employee / Borrower Name</p>
-            <p id="arEmployeeName" class="text-sm font-bold text-slate-900 mt-0.5">Employee Name</p>
+            <p id="arEmployeeName" class="text-sm font-bold text-slate-900 mt-0.5"></p>
           </div>
           <div>
-            <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Department / Business Unit</p>
-            <p id="arDepartment" class="text-sm font-bold text-slate-900 mt-0.5">Department</p>
+            <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Position &amp; Department</p>
+            <p id="arDepartment" class="text-sm font-bold text-slate-900 mt-0.5"></p>
           </div>
           <div>
             <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Equipment Type / Category</p>
-            <p id="arCategory" class="text-sm font-bold text-slate-900 mt-0.5">Laptop</p>
+            <p id="arCategory" class="text-sm font-bold text-slate-900 mt-0.5"></p>
           </div>
           <div>
             <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Custody Classification</p>
-            <p id="arStatus" class="text-sm font-bold text-slate-900 mt-0.5">Assigned</p>
+            <p id="arStatus" class="text-sm font-bold text-slate-900 mt-0.5"></p>
           </div>
         </div>
 
-        <!-- Equipment Details Table -->
         <table class="w-full border-collapse border border-slate-400 text-xs mb-6">
           <thead>
             <tr class="bg-slate-200 text-slate-900 font-bold uppercase">
@@ -632,21 +627,19 @@
           </thead>
           <tbody>
             <tr>
-              <td id="arTableTag" class="border border-slate-400 py-3 px-3 font-mono font-bold align-top">IM-0001</td>
-              <td id="arTableCat" class="border border-slate-400 py-3 px-3 font-semibold align-top">Laptop</td>
-              <td id="arTableDesc" class="border border-slate-400 py-3 px-3 align-top leading-relaxed">Specs here</td>
-              <td id="arTablePurch" class="border border-slate-400 py-3 px-3 text-center align-top">2026-01-15</td>
-              <td id="arTablePrice" class="border border-slate-400 py-3 px-3 text-right font-mono font-semibold align-top">₱0.00</td>
+              <td id="arTableTag" class="border border-slate-400 py-3 px-3 font-mono font-bold align-top"></td>
+              <td id="arTableCat" class="border border-slate-400 py-3 px-3 font-semibold align-top"></td>
+              <td id="arTableDesc" class="border border-slate-400 py-3 px-3 align-top leading-relaxed"></td>
+              <td id="arTablePurch" class="border border-slate-400 py-3 px-3 text-center align-top"></td>
+              <td id="arTablePrice" class="border border-slate-400 py-3 px-3 text-right font-mono font-semibold align-top"></td>
             </tr>
           </tbody>
         </table>
 
-        <!-- Custody History Note (if Reassigned / Borrowed) -->
         <div id="arHistoryBox" class="hidden mb-5 p-3 rounded border border-slate-300 bg-slate-50 text-[11px] text-slate-700">
           <strong>Issuance History Note:</strong> <span id="arHistoryText"></span>
         </div>
 
-        <!-- Accountability Terms & Conditions -->
         <div class="space-y-2 text-[11px] text-slate-700 leading-relaxed mb-8 border-t border-slate-200 pt-4">
           <p class="font-bold uppercase text-slate-900">Terms of Accountability &amp; Custody:</p>
           <ol class="list-decimal list-inside space-y-1">
@@ -657,12 +650,11 @@
           </ol>
         </div>
 
-        <!-- Signatories Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 pt-6 text-xs">
           <div>
             <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-10">Received &amp; Acknowledged By:</p>
             <div class="border-t border-slate-900 pt-1.5">
-              <p id="arSignEmployee" class="font-bold text-slate-900 uppercase">EMPLOYEE NAME</p>
+              <p id="arSignEmployee" class="font-bold text-slate-900 uppercase"></p>
               <p class="text-[11px] text-slate-600">Employee Signature over Printed Name</p>
               <p class="text-[11px] text-slate-600 mt-1">Date Signed: ___________________</p>
             </div>
@@ -673,7 +665,7 @@
             <div class="border-t border-slate-900 pt-1.5">
               <p class="font-bold text-slate-900 uppercase">I.T. Department Representative</p>
               <p class="text-[11px] text-slate-600">System Administrator / IT Support</p>
-              <p class="text-[11px] text-slate-600 mt-1">Date Released: <span id="arSignDate">2026-11-23</span></p>
+              <p class="text-[11px] text-slate-600 mt-1">Date Released: <span id="arSignDate"></span></p>
             </div>
           </div>
 
@@ -690,9 +682,7 @@
     </div>
   </div>
 
-  <!-- ===================================================================== -->
-  <!-- MODAL 2: GOOGLE SHEETS & DRIVE BACKEND CONFIGURATION                  -->
-  <!-- ===================================================================== -->
+  <!-- MODAL 2: GOOGLE SHEETS & DRIVE BACKEND CONFIGURATION -->
   <div id="configModal" class="fixed inset-0 z-50 hidden bg-slate-950/75 backdrop-blur-sm p-4 flex items-center justify-center">
     <div class="glass-panel rounded-2xl w-full max-w-lg p-6 space-y-4">
       <div class="flex items-center justify-between border-b border-slate-200/60 dark:border-slate-700/60 pb-3">
@@ -706,7 +696,7 @@
       </div>
 
       <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-        Paste your deployed <strong>Google Apps Script Web App URL</strong> below to sync all <code class="font-mono text-sky-500">IM-XXXX</code> records directly to Google Sheets and store uploaded Acknowledgement Receipts in Google Drive. Leave blank to run in instant Local Demo Mode.
+        Paste your deployed <strong>Google Apps Script Web App URL</strong> below to sync borrowers to <code class="font-mono text-sky-400">Borrow_Return_Log</code> and logs/returns to <code class="font-mono text-indigo-400">Equipment_Logs</code>.
       </p>
 
       <div>
@@ -715,8 +705,8 @@
       </div>
 
       <div class="flex flex-wrap items-center justify-between gap-2 pt-2">
-        <button type="button" onclick="resetDemoData()" class="px-3.5 py-2 rounded-xl text-xs font-semibold text-amber-600 dark:text-amber-400 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/25 cursor-pointer">
-          Reset Sample Data
+        <button type="button" onclick="clearLocalCache()" class="px-3.5 py-2 rounded-xl text-xs font-semibold text-rose-600 dark:text-rose-400 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/25 cursor-pointer">
+          Clear Local Cache
         </button>
         <div class="flex items-center gap-2">
           <button type="button" onclick="closeConfigModal()" class="px-4 py-2 rounded-xl text-xs font-semibold glass-input cursor-pointer">Cancel</button>
@@ -728,21 +718,16 @@
     </div>
   </div>
 
-  <!-- ===================================================================== -->
-  <!-- MODAL 3: GOOGLE APPS SCRIPT BACKEND CODE VIEWER                       -->
-  <!-- ===================================================================== -->
+  <!-- MODAL 3: GOOGLE APPS SCRIPT BACKEND CODE VIEWER -->
   <div id="scriptModal" class="fixed inset-0 z-50 hidden bg-slate-950/75 backdrop-blur-sm p-4 flex items-center justify-center">
     <div class="glass-panel rounded-2xl w-full max-w-3xl p-6 space-y-4 max-h-[90vh] flex flex-col">
       <div class="flex items-center justify-between border-b border-slate-200/60 dark:border-slate-700/60 pb-3">
         <div>
           <h3 class="text-base font-bold">Google Apps Script Backend (<code class="font-mono text-sky-400">Code.gs</code>)</h3>
-          <p class="text-xs text-slate-500 dark:text-slate-400">Supports sequential IM-0001 tags, Reassignments, Google Sheets logging &amp; Google Drive AR uploads</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400">Syncs Position in Equipment_Logs &amp; Borrow_Return_Log</p>
         </div>
         <div class="flex items-center gap-2">
           <button onclick="copyAppsScriptCode()" class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white flex items-center gap-1.5 cursor-pointer">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
-            </svg>
             Copy Code
           </button>
           <button onclick="closeScriptModal()" class="px-3 py-1.5 rounded-xl text-xs font-semibold glass-input cursor-pointer">Close</button>
@@ -751,186 +736,50 @@
 
       <div class="overflow-y-auto rounded-xl bg-slate-950 text-slate-200 p-4 border border-slate-800 font-mono text-xs leading-relaxed">
 <pre id="appsScriptCodeBlock">const SHEET_NAME = "Equipment_Logs";
-const FOLDER_ID = "YOUR_GOOGLE_DRIVE_FOLDER_ID"; // Palitan ng actual Google Drive Folder ID
+const BORROW_SHEET_NAME = "Borrow_Return_Log";
+const FOLDER_ID = "1aRq19wKwedO_78fWdj2VxV1HAfZ8rEoT";
 
 function doGet(e) {
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName(SHEET_NAME);
+  if (!sheet) {
+    return ContentService.createTextOutput(JSON.stringify({ status: "success", data: [] }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
   const data = sheet.getDataRange().getValues();
   if (data.length &lt;= 1) {
     return ContentService.createTextOutput(JSON.stringify({ status: "success", data: [] }))
       .setMimeType(ContentService.MimeType.JSON);
   }
   const headers = data[0];
-  const rows = data.slice(1).map(row =&gt; {
-    let obj = {};
-    headers.forEach((h, i) =&gt; obj[h] = row[i]);
-    return obj;
-  });
-  return ContentService
-    .createTextOutput(JSON.stringify({ status: "success", data: rows }))
+  const rows = data.slice(1)
+    .filter(row =&gt; row.some(cell =&gt; cell !== ""))
+    .map(row =&gt; {
+      let obj = {};
+      headers.forEach((h, i) =&gt; obj[h] = row[i]);
+      return obj;
+    });
+  return ContentService.createTextOutput(JSON.stringify({ status: "success", data: rows }))
     .setMimeType(ContentService.MimeType.JSON);
-}
-
-function doPost(e) {
-  try {
-    const payload = JSON.parse(e.postData.contents);
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
-    const folder = DriveApp.getFolderById(FOLDER_ID);
-    const data = sheet.getDataRange().getValues();
-
-    let fileUrl = payload.arFileUrl || "No Attachment";
-
-    // Upload Acknowledgement Receipt kung may bagong file attachment
-    if (payload.fileData &amp;&amp; payload.fileName) {
-      const contentType = payload.fileData.substring(5, payload.fileData.indexOf(';'));
-      const base64Data = payload.fileData.split(',')[1];
-      const decoded = Utilities.base64Decode(base64Data);
-      const cleanEmpName = payload.employeeName.replace(/[^a-zA-Z0-9]/g, "_");
-      const newFileName = `AR_${payload.assetId}_${cleanEmpName}_${payload.fileName}`;
-
-      const blob = Utilities.newBlob(decoded, contentType, newFileName);
-      const file = folder.createFile(blob);
-      file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
-      fileUrl = file.getUrl();
-    }
-
-    const timestamp = new Date().toLocaleString("en-PH", { timeZone: "Asia/Manila" });
-
-    // Check kung existing Asset ID (for Reassignment / Return update)
-    let existingRowIndex = -1;
-    for (let i = 1; i &lt; data.length; i++) {
-      if (data[i][0] === payload.assetId) {
-        existingRowIndex = i + 1;
-        break;
-      }
-    }
-
-    const rowValues = [
-      payload.assetId,
-      payload.employeeName,
-      payload.department,
-      payload.category,
-      payload.itemDetails,
-      payload.datePurchased,
-      payload.price,
-      payload.dateReceived,
-      payload.status,
-      fileUrl,
-      payload.historyNote || "",
-      timestamp
-    ];
-
-    if (existingRowIndex &gt; 0) {
-      sheet.getRange(existingRowIndex, 1, 1, rowValues.length).setValues([rowValues]);
-    } else {
-      sheet.appendRow(rowValues);
-    }
-
-    return ContentService
-      .createTextOutput(JSON.stringify({ status: "success", assetId: payload.assetId, fileUrl: fileUrl }))
-      .setMimeType(ContentService.MimeType.JSON);
-
-  } catch (err) {
-    return ContentService
-      .createTextOutput(JSON.stringify({ status: "error", message: err.toString() }))
-      .setMimeType(ContentService.MimeType.JSON);
-  }
 }</pre>
       </div>
     </div>
   </div>
 
-  <!-- ===================================================================== -->
-  <!-- APPLICATION JAVASCRIPT LOGIC                                          -->
-  <!-- ===================================================================== -->
   <script>
-    // Storage Keys
-    const STORAGE_KEY_ASSETS = 'imerch_it_assets_v1';
+    const STORAGE_KEY_ASSETS = 'imerch_it_assets_v2_clean';
     const STORAGE_KEY_SCRIPT_URL = 'imerch_apps_script_url';
     const STORAGE_KEY_THEME = 'imerch_theme_mode';
-    const DEFAULT_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxSIug8essB5fGFos16RSr0-UaxqlrbRFk3PK4P5InC1Oe-zh9gBhZhrhdkmwKdUBEUjA/exec';
+    const DEFAULT_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyX5Bxcv6ODbMUyRdUv81x9-3yu_1-OvIR47L65HLKwNZDCNZijZNBhJF2gWJtp9DOzMA/exec';
 
-    // Default Pre-loaded Sample Records (Starting at IM-0001)
-    const INITIAL_SAMPLE_ASSETS = [
-      {
-        assetId: 'IM-0001',
-        employeeName: 'Unassigned (Returned by Mark Reyes)',
-        department: 'Creative & Multimedia',
-        category: 'Laptop',
-        itemDetails: 'Apple MacBook Pro 14" M2 Pro | 16GB RAM / 512GB SSD | S/N: C02X94K1MD6R + 67W MagSafe Charger',
-        datePurchased: '2025-06-15',
-        price: 98500,
-        dateReceived: '2026-11-10',
-        status: 'Available',
-        arFileName: 'AR_IM-0001_Return_Clearance.pdf',
-        arFileUrl: '#',
-        historyNote: 'Previously assigned to Mark Reyes (Resigned Nov 10, 2026). Inspected & cleared by IT for borrowing/reassignment.'
-      },
-      {
-        assetId: 'IM-0002',
-        employeeName: 'Angela Marie Santos',
-        department: 'Digital Marketing',
-        category: 'Laptop',
-        itemDetails: 'Lenovo ThinkPad X1 Carbon Gen 11 | Intel Core i7 / 16GB / 1TB NVMe | S/N: PF-49281A',
-        datePurchased: '2026-02-10',
-        price: 76900,
-        dateReceived: '2026-02-14',
-        status: 'Assigned',
-        arFileName: 'AR_IM-0002_Angela_Santos.pdf',
-        arFileUrl: '#',
-        historyNote: 'Brand new issuance upon onboarding.'
-      },
-      {
-        assetId: 'IM-0003',
-        employeeName: 'Carlo Mendoza',
-        department: 'IT & Systems Engineering',
-        category: 'Desktop',
-        itemDetails: 'Custom Workstation Ryzen 9 7900X | 64GB DDR5 / RTX 4070 / 2TB SSD | S/N: IM-WS-0093',
-        datePurchased: '2026-05-20',
-        price: 112000,
-        dateReceived: '2026-05-22',
-        status: 'Assigned',
-        arFileName: 'AR_IM-0003_Carlo_Mendoza.jpg',
-        arFileUrl: '#',
-        historyNote: 'Primary video rendering & server admin workstation.'
-      },
-      {
-        assetId: 'IM-0004',
-        employeeName: 'Sofia Bautista',
-        department: 'Finance & Accounting',
-        category: 'Printer',
-        itemDetails: 'Epson EcoTank L6490 Wi-Fi Duplex All-in-One Ink Tank Printer | S/N: X89K204912',
-        datePurchased: '2026-08-05',
-        price: 21500,
-        dateReceived: '2026-08-08',
-        status: 'Assigned',
-        arFileName: 'AR_IM-0004_Sofia_Bautista.pdf',
-        arFileUrl: '#',
-        historyNote: 'Assigned to Finance & Billing Wing.'
-      },
-      {
-        assetId: 'IM-0005',
-        employeeName: 'Unassigned (Spare Pool)',
-        department: 'Operations',
-        category: 'Laptop',
-        itemDetails: 'ASUS Zenbook 14 OLED | Ryzen 7 / 16GB RAM / 512GB SSD | S/N: N8N0CX049218',
-        datePurchased: '2026-09-12',
-        price: 54995,
-        dateReceived: '2026-11-18',
-        status: 'Available',
-        arFileName: '',
-        arFileUrl: '',
-        historyNote: 'Returned from short-term field event; ready for employee loan.'
-      }
-    ];
+    const LOGO_LIGHT = 'imerchlogo.jpg';
+    const LOGO_DARK = 'imerchlogowhite1.jpg';
 
-    // Global State
     let assets = [];
-    let currentFormMode = 'new'; // 'new' or 'reassign'
-    let calendarDate = new Date(2026, 10, 1); // November 2026 default view
+    let currentFormMode = 'new';
+    let calendarDate = new Date();
     let selectedCalendarDateStr = null;
 
-    // Initialize App on Load
     window.addEventListener('DOMContentLoaded', () => {
       initTheme();
       loadAssets();
@@ -938,16 +787,31 @@ function doPost(e) {
       updateSyncBadge();
     });
 
-    // =========================================================================
-    // THEME (DARK / LIGHT MODE)
-    // =========================================================================
+    function syncLogosWithTheme(isDark) {
+      const headerLogo = document.getElementById('headerBrandLogo');
+      const arLogo = document.getElementById('arBrandLogo');
+
+      // Dark theme -> white logo; Light theme -> black logo
+      if (headerLogo) {
+        headerLogo.src = isDark ? LOGO_DARK : LOGO_LIGHT;
+      }
+      // AR print sheet uses theme-aware logo too (black logo in light mode, white logo in dark mode)
+      if (arLogo) {
+        arLogo.src = isDark ? LOGO_DARK : LOGO_LIGHT;
+      }
+    }
+
     function initTheme() {
       const savedTheme = localStorage.getItem(STORAGE_KEY_THEME) || 'dark';
-      if (savedTheme === 'dark') {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
+      const isDark = savedTheme === 'dark';
+      document.documentElement.classList.toggle('dark', isDark);
+      syncLogosWithTheme(isDark);
+    }
+
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem(STORAGE_KEY_THEME, isDark ? 'dark' : 'light');
+      syncLogosWithTheme(isDark);
     }
 
     function getActiveScriptUrl() {
@@ -955,27 +819,22 @@ function doPost(e) {
       return customUrl !== null ? customUrl.trim() : DEFAULT_SCRIPT_URL;
     }
 
-    // =========================================================================
-    // DATA LOADING & GOOGLE SHEETS SYNC
-    // =========================================================================
     async function loadAssets() {
       const scriptUrl = getActiveScriptUrl();
       const localStored = localStorage.getItem(STORAGE_KEY_ASSETS);
 
+      assets = [];
       if (localStored) {
         try {
-          assets = JSON.parse(localStored);
+          const parsed = JSON.parse(localStored);
+          if (Array.isArray(parsed)) assets = parsed;
         } catch (e) {
-          assets = [...INITIAL_SAMPLE_ASSETS];
+          assets = [];
         }
-      } else {
-        assets = [...INITIAL_SAMPLE_ASSETS];
-        saveAssetsLocal();
       }
 
       refreshAllViews();
 
-      // If Google Apps Script URL is configured, fetch live rows from Google Sheets
       if (scriptUrl) {
         try {
           const res = await fetch(scriptUrl);
@@ -984,30 +843,45 @@ function doPost(e) {
             assets = json.data.map(row => ({
               assetId: row['Asset ID'] || row.assetId || getNextSequentialAssetId(),
               employeeName: row['Employee Name'] || row.employeeName || 'Unassigned',
+              position: row['Position'] || row.position || '',
               department: row['Department'] || row.department || 'Operations',
               category: row['Category'] || row.category || 'Laptop',
               itemDetails: row['Item Details'] || row.itemDetails || '',
+              serialNumber: row['Serial Number'] || row.serialNumber || '',
               datePurchased: formatDateISO(row['Date Purchased'] || row.datePurchased),
               price: parseFloat(row['Price'] || row.price || 0),
               dateReceived: formatDateISO(row['Date Received'] || row['Date Released'] || row.dateReceived || row.dateReleased),
               status: row['Status'] || row.status || 'Assigned',
               arFileName: row['AR File Link'] && row['AR File Link'] !== 'No Attachment' ? 'View Drive AR' : '',
               arFileUrl: row['AR File Link'] || '',
-              historyNote: row['History Note'] || ''
+              historyNote: row['History Note'] || row.historyNote || ''
             }));
             saveAssetsLocal();
             refreshAllViews();
-            showToast('Connected live to Google Sheets database!', 'success');
+            updateSyncBadge('live');
+            return;
           }
         } catch (err) {
           console.error('Google Sheets sync error:', err);
-          showToast('Offline / CORS notice: Showing cached local records.', 'warning');
+          updateSyncBadge('offline');
+          showToast('Hindi ma-reach ang Google Sheets ngayon; naka-empty/cached view muna.', 'warning');
+          return;
         }
       }
+
+      updateSyncBadge(assets.length ? 'cached' : 'empty');
     }
 
     function saveAssetsLocal() {
       localStorage.setItem(STORAGE_KEY_ASSETS, JSON.stringify(assets));
+    }
+
+    function clearLocalCache() {
+      localStorage.removeItem(STORAGE_KEY_ASSETS);
+      assets = [];
+      refreshAllViews();
+      closeConfigModal();
+      showToast('Na-clear na ang local cache. Malinis na ulit.', 'info');
     }
 
     function refreshAllViews() {
@@ -1018,9 +892,6 @@ function doPost(e) {
       renderCalendar();
     }
 
-    // =========================================================================
-    // SEQUENTIAL ASSET ID GENERATOR (IM-0001, IM-0002, ...)
-    // =========================================================================
     function getNextSequentialAssetId() {
       if (!assets || assets.length === 0) return 'IM-0001';
       let maxNum = 0;
@@ -1031,8 +902,7 @@ function doPost(e) {
           if (num > maxNum) maxNum = num;
         }
       });
-      const nextNum = maxNum + 1;
-      return 'IM-' + String(nextNum).padStart(4, '0');
+      return 'IM-' + String(maxNum + 1).padStart(4, '0');
     }
 
     function updateNextAssetTagDisplay() {
@@ -1041,9 +911,6 @@ function doPost(e) {
       }
     }
 
-    // =========================================================================
-    // FORM MODES: NEW ENTRY vs BORROW / REASSIGN EXISTING AVAILABLE UNIT
-    // =========================================================================
     function setFormMode(mode) {
       currentFormMode = mode;
       const tabNew = document.getElementById('tabNewEntry');
@@ -1062,7 +929,7 @@ function doPost(e) {
         tabReassign.className = 'py-2 px-3 rounded-lg text-xs sm:text-sm font-semibold transition flex items-center justify-center gap-2 bg-white dark:bg-slate-700 text-amber-600 dark:text-amber-300 shadow-sm cursor-pointer';
         tabNew.className = 'py-2 px-3 rounded-lg text-xs sm:text-sm font-semibold transition flex items-center justify-center gap-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white cursor-pointer';
         reassignBox.classList.remove('hidden');
-        submitBtnText.textContent = 'Confirm Reassignment & Issue AR';
+        submitBtnText.textContent = 'Confirm Borrow / Reassign & Issue AR';
         populateAvailableDropdown();
         document.getElementById('displayAssetId').textContent = 'SELECT UNIT';
         document.getElementById('status').value = 'Borrowed';
@@ -1077,7 +944,7 @@ function doPost(e) {
       availableItems.forEach(item => {
         const opt = document.createElement('option');
         opt.value = item.assetId;
-        opt.textContent = `${item.assetId} • [${item.category}] ${item.itemDetails.substring(0, 55)}...`;
+        opt.textContent = `${item.assetId} • [${item.category}] ${item.itemDetails.substring(0, 55)}`;
         select.appendChild(opt);
       });
     }
@@ -1098,14 +965,16 @@ function doPost(e) {
       document.getElementById('displayAssetId').textContent = item.assetId;
       document.getElementById('category').value = item.category;
       document.getElementById('itemDetails').value = item.itemDetails;
+      document.getElementById('serialNumber').value = item.serialNumber || '';
       document.getElementById('datePurchased').value = item.datePurchased;
       document.getElementById('price').value = item.price;
       document.getElementById('employeeName').value = '';
+      document.getElementById('position').value = '';
       document.getElementById('employeeName').focus();
       document.getElementById('status').value = 'Borrowed';
       setDefaultFormDates(true);
 
-      noteEl.textContent = `Previous Status: ${item.employeeName} — ${item.historyNote || 'Ready for reassignment.'}`;
+      noteEl.textContent = `Previous Record: ${item.employeeName}${item.position ? ' (' + item.position + ')' : ''} — ${item.historyNote || 'Ready for borrowing/reassignment.'}`;
       noteEl.classList.remove('hidden');
     }
 
@@ -1128,9 +997,6 @@ function doPost(e) {
       }
     }
 
-    // =========================================================================
-    // FORM SUBMISSION (SAVE NEW OR REASSIGN EXISTING + DRIVE UPLOAD)
-    // =========================================================================
     async function handleFormSubmit(e) {
       e.preventDefault();
 
@@ -1138,22 +1004,28 @@ function doPost(e) {
       const originalBtnHtml = submitBtn.innerHTML;
 
       let targetAssetId = getNextSequentialAssetId();
+      let actionType = 'create';
       let historyNote = 'Initial hardware issuance.';
+      let existingArLink = '';
 
       if (currentFormMode === 'reassign') {
         const chosenId = document.getElementById('availableAssetSelect').value;
         if (!chosenId) {
-          showToast('Please select an available/returned equipment from the dropdown first.', 'error');
+          showToast('Please select an available/returned equipment first.', 'error');
           return;
         }
         targetAssetId = chosenId;
+        actionType = 'reassign';
         const oldAsset = assets.find(a => a.assetId === chosenId);
         const prevHolder = oldAsset ? oldAsset.employeeName : 'IT Stock';
-        historyNote = `Reassigned/Borrowed on ${document.getElementById('dateReceived').value} (Previously: ${prevHolder}).`;
+        existingArLink = oldAsset ? (oldAsset.arFileUrl || '') : '';
+        historyNote = `Borrowed/Reassigned on ${document.getElementById('dateReceived').value} (Previous: ${prevHolder}).`;
       }
 
       const employeeName = document.getElementById('employeeName').value.trim();
+      const position = document.getElementById('position').value.trim();
       const department = document.getElementById('department').value;
+      const serialNumber = document.getElementById('serialNumber').value.trim();
       const category = document.getElementById('category').value;
       const status = document.getElementById('status').value;
       const itemDetails = document.getElementById('itemDetails').value.trim();
@@ -1163,27 +1035,34 @@ function doPost(e) {
       const fileInput = document.getElementById('arFile');
       const file = fileInput.files[0];
 
+      if (status === 'Borrowed' && actionType === 'create') {
+        actionType = 'borrow';
+      }
+
       submitBtn.disabled = true;
       submitBtn.innerHTML = `<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path></svg> Processing...`;
 
       const finalizeRecord = async (base64Data = null, fileName = null) => {
         const scriptUrl = getActiveScriptUrl();
-        let uploadedUrl = fileName ? '#local-preview' : '';
+        let uploadedUrl = fileName ? '#local-preview' : existingArLink;
 
-        // Sync to Google Apps Script + Google Drive if configured
         if (scriptUrl) {
           try {
             const payload = {
+              action: actionType,
               assetId: targetAssetId,
               employeeName,
+              position,
               department,
               category,
               itemDetails,
+              serialNumber,
               datePurchased,
               price,
-              dateReceived,
+              dateReleased: dateReceived,
               status,
               historyNote,
+              existingArLink,
               fileData: base64Data,
               fileName: fileName
             };
@@ -1204,19 +1083,20 @@ function doPost(e) {
         const recordObj = {
           assetId: targetAssetId,
           employeeName,
+          position,
           department,
           category,
           itemDetails,
+          serialNumber,
           datePurchased,
           price,
           dateReceived,
           status,
-          arFileName: fileName || '',
+          arFileName: fileName || (uploadedUrl && uploadedUrl.startsWith('http') ? 'View Drive AR' : ''),
           arFileUrl: uploadedUrl,
           historyNote
         };
 
-        // Update existing or push new
         const existingIdx = assets.findIndex(a => a.assetId === targetAssetId);
         if (existingIdx >= 0) {
           assets[existingIdx] = recordObj;
@@ -1230,7 +1110,7 @@ function doPost(e) {
 
         submitBtn.disabled = false;
         submitBtn.innerHTML = originalBtnHtml;
-        showToast(`Asset ${targetAssetId} saved & assigned to ${employeeName}!`, 'success');
+        showToast(`Asset ${targetAssetId} saved for ${employeeName} (${position})!`, 'success');
       };
 
       if (file) {
@@ -1242,29 +1122,53 @@ function doPost(e) {
       }
     }
 
-    // =========================================================================
-    // MARK AS RETURNED (SO ANOTHER EMPLOYEE CAN BORROW IT)
-    // =========================================================================
-    function markAsReturned(assetId) {
+    async function markAsReturned(assetId) {
       const idx = assets.findIndex(a => a.assetId === assetId);
       if (idx === -1) return;
 
       const prevEmp = assets[idx].employeeName;
+      const prevPos = assets[idx].position || '';
       const todayStr = new Date().toISOString().split('T')[0];
+      const histNote = `Returned to IT custody on ${todayStr} by ${prevEmp}${prevPos ? ' (' + prevPos + ')' : ''}. Ready for borrowing/reassignment.`;
 
       assets[idx].status = 'Available';
       assets[idx].employeeName = `Unassigned (Returned by ${prevEmp.replace(/^Unassigned\s*\(|\)$/g, '')})`;
       assets[idx].dateReceived = todayStr;
-      assets[idx].historyNote = `Returned to IT custody on ${todayStr} by ${prevEmp}. Ready for reassignment.`;
+      assets[idx].historyNote = histNote;
 
       saveAssetsLocal();
       refreshAllViews();
-      showToast(`${assetId} marked as Available/Returned. Ready in Borrow dropdown!`, 'info');
+
+      const scriptUrl = getActiveScriptUrl();
+      if (scriptUrl) {
+        try {
+          await fetch(scriptUrl, {
+            method: 'POST',
+            body: JSON.stringify({
+              action: 'return',
+              assetId: assets[idx].assetId,
+              employeeName: assets[idx].employeeName,
+              position: prevPos,
+              department: assets[idx].department,
+              category: assets[idx].category,
+              itemDetails: assets[idx].itemDetails,
+              serialNumber: assets[idx].serialNumber || '',
+              datePurchased: assets[idx].datePurchased,
+              price: assets[idx].price,
+              dateReleased: todayStr,
+              status: 'Available',
+              historyNote: histNote,
+              existingArLink: assets[idx].arFileUrl || ''
+            })
+          });
+        } catch (err) {
+          console.error('Return sync error:', err);
+        }
+      }
+
+      showToast(`${assetId} marked as Available/Returned.`, 'info');
     }
 
-    // =========================================================================
-    // KPI METRICS & TABLE RENDERING
-    // =========================================================================
     function updateKPIs() {
       const total = assets.length;
       const assigned = assets.filter(a => a.status === 'Assigned' || a.status === 'Borrowed').length;
@@ -1287,6 +1191,7 @@ function doPost(e) {
         const matchesQuery =
           item.assetId.toLowerCase().includes(query) ||
           item.employeeName.toLowerCase().includes(query) ||
+          (item.position || '').toLowerCase().includes(query) ||
           item.itemDetails.toLowerCase().includes(query) ||
           item.department.toLowerCase().includes(query);
 
@@ -1302,8 +1207,8 @@ function doPost(e) {
       if (filtered.length === 0) {
         tbody.innerHTML = `
           <tr>
-            <td colspan="8" class="py-10 text-center text-slate-500 dark:text-slate-400">
-              No equipment records match your current search or filter criteria.
+            <td colspan="8" class="py-12 text-center text-slate-500 dark:text-slate-400">
+              Walang nakitang equipment record. Mag-encode ng bagong asset sa form sa itaas o i-check ang Google Sheets sync.
             </td>
           </tr>`;
         return;
@@ -1312,8 +1217,8 @@ function doPost(e) {
       tbody.innerHTML = filtered.map(item => {
         const statusBadge = getStatusBadgeHtml(item.status);
         const arCell = item.arFileName
-          ? `<a href="${item.arFileUrl && item.arFileUrl !== '#' && item.arFileUrl !== '#local-preview' ? item.arFileUrl : 'javascript:void(0)'}"
-                ${item.arFileUrl && item.arFileUrl.startsWith('http') ? 'target="_blank"' : `onclick="showToast('Attached file: ${escapeHtml(item.arFileName)} (Connect Google Drive URL for cloud link)', 'info')"`}
+          ? `<a href="${item.arFileUrl && item.arFileUrl.startsWith('http') ? item.arFileUrl : 'javascript:void(0)'}"
+                ${item.arFileUrl && item.arFileUrl.startsWith('http') ? 'target="_blank"' : `onclick="showToast('Attached file: ${escapeHtml(item.arFileName)}', 'info')"`}
                 class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium bg-sky-500/15 text-sky-600 dark:text-sky-300 hover:bg-sky-500/25 transition">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" /></svg>
                 ${escapeHtml(item.arFileName.length > 18 ? item.arFileName.substring(0, 16) + '...' : item.arFileName)}
@@ -1321,10 +1226,10 @@ function doPost(e) {
           : `<span class="text-xs text-slate-400 italic">No file attached</span>`;
 
         const actionBtn = item.status !== 'Available'
-          ? `<button onclick="markAsReturned('${item.assetId}')" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-amber-500/15 text-amber-600 dark:text-amber-300 hover:bg-amber-500/25 transition cursor-pointer" title="Mark unit as returned so another employee can borrow it">
+          ? `<button onclick="markAsReturned('${item.assetId}')" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-amber-500/15 text-amber-600 dark:text-amber-300 hover:bg-amber-500/25 transition cursor-pointer" title="Mark unit as returned">
                Return
              </button>`
-          : `<button onclick="quickBorrow('${item.assetId}')" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500/15 text-emerald-600 dark:text-emerald-300 hover:bg-emerald-500/25 transition cursor-pointer" title="Assign/Borrow this available unit">
+          : `<button onclick="quickBorrow('${item.assetId}')" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500/15 text-emerald-600 dark:text-emerald-300 hover:bg-emerald-500/25 transition cursor-pointer" title="Borrow/Reassign this available unit">
                Borrow
              </button>`;
 
@@ -1337,6 +1242,7 @@ function doPost(e) {
             </td>
             <td class="py-3.5 px-4 align-top">
               <div class="font-semibold text-slate-900 dark:text-slate-100">${escapeHtml(item.employeeName)}</div>
+              ${item.position ? `<div class="text-xs font-medium text-sky-600 dark:text-sky-400">${escapeHtml(item.position)}</div>` : ''}
               <div class="text-xs text-slate-500 dark:text-slate-400">${escapeHtml(item.department)}</div>
             </td>
             <td class="py-3.5 px-4 align-top max-w-xs">
@@ -1344,6 +1250,7 @@ function doPost(e) {
                 ${escapeHtml(item.category)}
               </span>
               <p class="text-xs text-slate-700 dark:text-slate-300 leading-snug">${escapeHtml(item.itemDetails)}</p>
+              ${item.serialNumber ? `<p class="text-[11px] font-mono text-slate-400 mt-0.5">S/N: ${escapeHtml(item.serialNumber)}</p>` : ''}
             </td>
             <td class="py-3.5 px-4 align-top text-xs whitespace-nowrap">
               <div><span class="text-slate-400">Purch:</span> <span class="font-mono">${escapeHtml(item.datePurchased)}</span></div>
@@ -1379,7 +1286,7 @@ function doPost(e) {
       document.getElementById('availableAssetSelect').value = assetId;
       populateFromAvailableAsset();
       window.scrollTo({ top: 0, behavior: 'smooth' });
-      showToast(`Selected ${assetId} for borrowing. Enter employee name below.`, 'info');
+      showToast(`Selected ${assetId} for borrowing.`, 'info');
     }
 
     function getStatusBadgeHtml(status) {
@@ -1392,9 +1299,6 @@ function doPost(e) {
       return `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-500/15 text-amber-600 dark:text-amber-300 border border-amber-500/25"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>Available</span>`;
     }
 
-    // =========================================================================
-    // INTERACTIVE CALENDAR WIDGET
-    // =========================================================================
     function renderCalendar() {
       const year = calendarDate.getFullYear();
       const month = calendarDate.getMonth();
@@ -1406,7 +1310,6 @@ function doPost(e) {
       const grid = document.getElementById('calendarGrid');
       grid.innerHTML = '';
 
-      // Empty cells before 1st day
       for (let i = 0; i < firstDayIndex; i++) {
         grid.innerHTML += `<div class="p-2"></div>`;
       }
@@ -1481,7 +1384,7 @@ function doPost(e) {
           <div class="p-2 rounded-lg bg-slate-200/50 dark:bg-slate-800/60 flex items-center justify-between gap-2">
             <div>
               ${typeLabel} <span class="font-mono font-bold">${item.assetId}</span> — ${escapeHtml(item.employeeName)}
-              <div class="text-[11px] text-slate-500 dark:text-slate-400">${escapeHtml(item.category)}: ${escapeHtml(item.itemDetails.substring(0, 42))}...</div>
+              <div class="text-[11px] text-slate-500 dark:text-slate-400">${escapeHtml(item.category)}: ${escapeHtml(item.itemDetails.substring(0, 42))}</div>
             </div>
             <button onclick="openPrintARModal('${item.assetId}')" class="px-2 py-1 rounded bg-sky-500/20 text-sky-600 dark:text-sky-300 font-semibold text-[11px] shrink-0 cursor-pointer">
               AR
@@ -1500,24 +1403,25 @@ function doPost(e) {
       renderTable();
     }
 
-    // =========================================================================
-    // PRINTABLE ACKNOWLEDGEMENT RECEIPT (AR) MODAL
-    // =========================================================================
     function openPrintARModal(assetId) {
       const item = assets.find(a => a.assetId === assetId);
       if (!item) return;
+
+      // Ensure AR logo reflects current theme (black logo in light mode, white logo in dark mode)
+      const isDark = document.documentElement.classList.contains('dark');
+      syncLogosWithTheme(isDark);
 
       document.getElementById('arAssetId').textContent = item.assetId;
       document.getElementById('arDateIssued').textContent = item.dateReceived;
       document.getElementById('arIssuanceType').textContent = `${item.category} • ${item.status}`;
       document.getElementById('arEmployeeName').textContent = item.employeeName;
-      document.getElementById('arDepartment').textContent = item.department;
+      document.getElementById('arDepartment').textContent = item.position ? `${item.position} — ${item.department}` : item.department;
       document.getElementById('arCategory').textContent = item.category;
       document.getElementById('arStatus').textContent = item.status;
 
       document.getElementById('arTableTag').textContent = item.assetId;
       document.getElementById('arTableCat').textContent = item.category;
-      document.getElementById('arTableDesc').textContent = item.itemDetails;
+      document.getElementById('arTableDesc').textContent = item.serialNumber ? `${item.itemDetails} | S/N: ${item.serialNumber}` : item.itemDetails;
       document.getElementById('arTablePurch').textContent = item.datePurchased;
       document.getElementById('arTablePrice').textContent = formatPHP(item.price);
 
@@ -1539,9 +1443,6 @@ function doPost(e) {
       document.getElementById('printAreaModal').classList.add('hidden');
     }
 
-    // =========================================================================
-    // CONFIGURATION & APPS SCRIPT MODALS
-    // =========================================================================
     function openConfigModal() {
       document.getElementById('scriptUrlInput').value = getActiveScriptUrl();
       document.getElementById('configModal').classList.remove('hidden');
@@ -1554,35 +1455,28 @@ function doPost(e) {
     function saveScriptUrl() {
       const url = document.getElementById('scriptUrlInput').value.trim();
       localStorage.setItem(STORAGE_KEY_SCRIPT_URL, url);
-      if (url) {
-        showToast('Google Apps Script URL saved! Syncing...', 'success');
-      } else {
-        showToast('Switched to Local Demo Mode.', 'info');
-      }
       updateSyncBadge();
       closeConfigModal();
       loadAssets();
+      showToast(url ? 'Google Apps Script URL saved! Syncing...' : 'URL cleared.', 'success');
     }
 
-    function updateSyncBadge() {
+    function updateSyncBadge(state = 'auto') {
       const url = getActiveScriptUrl();
       const dot = document.getElementById('syncDot');
       const label = document.getElementById('syncLabel');
-      if (url) {
+      if (!url) {
+        dot.className = 'w-2 h-2 rounded-full bg-amber-400 animate-pulse';
+        label.textContent = 'No Backend URL';
+        return;
+      }
+      if (state === 'offline') {
+        dot.className = 'w-2 h-2 rounded-full bg-rose-400';
+        label.textContent = 'Sync Warning';
+      } else {
         dot.className = 'w-2 h-2 rounded-full bg-emerald-400';
         label.textContent = 'Google Sheets Live';
-      } else {
-        dot.className = 'w-2 h-2 rounded-full bg-amber-400 animate-pulse';
-        label.textContent = 'Local Demo Mode';
       }
-    }
-
-    function resetDemoData() {
-      assets = [...INITIAL_SAMPLE_ASSETS];
-      saveAssetsLocal();
-      refreshAllViews();
-      closeConfigModal();
-      showToast('Sample IM-0001 to IM-0005 dataset restored.', 'info');
     }
 
     function openScriptModal() {
@@ -1604,17 +1498,16 @@ function doPost(e) {
       showToast('Apps Script backend code copied to clipboard!', 'success');
     }
 
-    // =========================================================================
-    // CSV EXPORT & UTILITIES
-    // =========================================================================
     function exportCSV() {
-      const headers = ['Asset ID', 'Employee Name', 'Department', 'Category', 'Item Details', 'Date Purchased', 'Price', 'Date Received', 'Status', 'AR File'];
+      const headers = ['Asset ID', 'Employee Name', 'Position', 'Department', 'Category', 'Item Details', 'Serial Number', 'Date Purchased', 'Price', 'Date Received', 'Status', 'AR File'];
       const rows = assets.map(a => [
         a.assetId,
         `"${(a.employeeName || '').replace(/"/g, '""')}"`,
+        `"${(a.position || '').replace(/"/g, '""')}"`,
         `"${(a.department || '').replace(/"/g, '""')}"`,
         a.category,
         `"${(a.itemDetails || '').replace(/"/g, '""')}"`,
+        `"${(a.serialNumber || '').replace(/"/g, '""')}"`,
         a.datePurchased,
         a.price,
         a.dateReceived,
