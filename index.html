@@ -9,7 +9,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet" />
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -18,17 +18,6 @@
           fontFamily: {
             sans: ['Inter', 'sans-serif'],
             mono: ['JetBrains Mono', 'monospace'],
-          },
-          colors: {
-            brand: {
-              400: '#38bdf8',
-              500: '#0ea5e9',
-              600: '#0284c7',
-            },
-            cyber: {
-              500: '#6366f1',
-              600: '#4f46e5',
-            }
           }
         }
       }
@@ -36,58 +25,51 @@
   </script>
   <style>
     :root {
-      --bg-gradient: radial-gradient(circle at 12% 18%, rgba(56, 189, 248, 0.16), transparent 36%),
-                     radial-gradient(circle at 88% 12%, rgba(99, 102, 241, 0.15), transparent 40%),
-                     radial-gradient(circle at 50% 90%, rgba(16, 185, 129, 0.10), transparent 45%),
-                     #f1f5f9;
-      --glass-bg: rgba(255, 255, 255, 0.72);
-      --glass-border: rgba(255, 255, 255, 0.85);
-      --glass-shadow: 0 8px 32px rgba(15, 23, 42, 0.08);
-      --glass-input: rgba(255, 255, 255, 0.85);
+      --bg-base: #f1f5f9;
+      --panel-bg: rgba(255, 255, 255, 0.94);
+      --panel-border: rgba(203, 213, 225, 0.85);
+      --panel-shadow: 0 6px 24px rgba(15, 23, 42, 0.06);
+      --input-bg: #ffffff;
     }
 
     html.dark {
-      --bg-gradient: radial-gradient(circle at 15% 15%, rgba(14, 165, 233, 0.18), transparent 38%),
-                     radial-gradient(circle at 85% 20%, rgba(99, 102, 241, 0.22), transparent 42%),
-                     radial-gradient(circle at 50% 88%, rgba(16, 185, 129, 0.12), transparent 45%),
-                     #070b14;
-      --glass-bg: rgba(15, 23, 42, 0.65);
-      --glass-border: rgba(148, 163, 184, 0.16);
-      --glass-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
-      --glass-input: rgba(30, 41, 59, 0.7);
+      --bg-base: #070b14;
+      --panel-bg: rgba(15, 23, 42, 0.92);
+      --panel-border: rgba(51, 65, 85, 0.65);
+      --panel-shadow: 0 8px 28px rgba(0, 0, 0, 0.38);
+      --input-bg: rgba(30, 41, 59, 0.92);
     }
 
     body {
-      background: var(--bg-gradient);
-      background-attachment: fixed;
+      background-color: var(--bg-base);
+      background-image:
+        radial-gradient(circle at 12% 15%, rgba(14, 165, 233, 0.12), transparent 38%),
+        radial-gradient(circle at 88% 15%, rgba(99, 102, 241, 0.12), transparent 40%);
       min-height: 100vh;
-      transition: background 0.35s ease, color 0.25s ease;
     }
 
+    /* GPU-friendly lightweight panels (eliminates scroll & typing lag) */
     .glass-panel {
-      background: var(--glass-bg);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      border: 1px solid var(--glass-border);
-      box-shadow: var(--glass-shadow);
+      background: var(--panel-bg);
+      border: 1px solid var(--panel-border);
+      box-shadow: var(--panel-shadow);
     }
 
     .glass-input {
-      background: var(--glass-input);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(148, 163, 184, 0.28);
-      transition: all 0.2s ease;
+      background: var(--input-bg);
+      border: 1px solid rgba(148, 163, 184, 0.32);
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
     }
 
     .glass-input:focus {
       outline: none;
       border-color: #38bdf8;
-      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.22);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
     }
 
     ::-webkit-scrollbar {
-      width: 7px;
-      height: 7px;
+      width: 6px;
+      height: 6px;
     }
     ::-webkit-scrollbar-track {
       background: transparent;
@@ -95,9 +77,6 @@
     ::-webkit-scrollbar-thumb {
       background: rgba(148, 163, 184, 0.35);
       border-radius: 9999px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: rgba(148, 163, 184, 0.55);
     }
 
     @media print {
@@ -109,10 +88,10 @@
         margin: 0 !important;
         padding: 0 !important;
       }
-      #printAreaModal, #printAreaModal * {
+      .active-print-modal, .active-print-modal * {
         visibility: visible;
       }
-      #printAreaModal {
+      .active-print-modal {
         position: fixed !important;
         inset: 0 !important;
         background: #ffffff !important;
@@ -121,7 +100,7 @@
         overflow: visible !important;
         display: block !important;
       }
-      #arPrintableSheet {
+      #arPrintableSheet, #atdPrintableSheet {
         box-shadow: none !important;
         border: none !important;
         width: 100% !important;
@@ -139,20 +118,12 @@
 
   <div id="toastContainer" class="fixed top-5 right-5 z-[60] flex flex-col gap-2 pointer-events-none"></div>
 
-  <!-- GLASS MODERN LOGIN SCREEN -->
-  <div id="loginOverlay" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+  <!-- LOGIN SCREEN -->
+  <div id="loginOverlay" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/60">
     <div class="w-full max-w-md glass-panel rounded-3xl p-6 sm:p-8 space-y-6 relative overflow-hidden">
-      <div class="pointer-events-none -top-20 -right-20 w-48 h-48 rounded-full bg-sky-500/15 blur-2xl absolute"></div>
-      <div class="pointer-events-none -bottom-20 -left-20 w-48 h-48 rounded-full bg-indigo-500/15 blur-2xl absolute"></div>
-
-      <div class="flex items-center justify-between gap-3 relative">
+      <div class="flex items-center justify-between gap-3">
         <div class="flex items-center gap-3 min-w-0">
-          <img
-            id="loginBrandLogo"
-            src="imerchlogowhite1.png"
-            alt="iMerch Media Inc."
-            class="h-8 sm:h-9 w-auto object-contain shrink-0"
-          />
+          <img id="loginBrandLogo" src="imerchlogowhite1.png" alt="iMerch Media Inc." class="h-8 sm:h-9 w-auto object-contain shrink-0" />
           <div class="h-5 w-px bg-slate-300/70 dark:bg-slate-700/80"></div>
           <span class="text-[11px] font-mono font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-sky-500/15 text-sky-600 dark:text-sky-300 border border-sky-500/25">
             Secured Login
@@ -169,51 +140,22 @@
         </button>
       </div>
 
-      <div class="relative">
-        <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white">
-          Sign In
-        </h1>
-        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
-          iMerch Media Inc. • I.T. Equipment &amp; Asset Management System
-        </p>
+      <div>
+        <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white">Sign In</h1>
+        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">iMerch Media Inc. • I.T. Equipment &amp; Asset Management System</p>
       </div>
 
-      <form id="loginForm" onsubmit="handleLoginSubmit(event)" class="space-y-4 relative" autocomplete="on">
+      <form id="loginForm" onsubmit="handleLoginSubmit(event)" class="space-y-4" autocomplete="on">
         <div>
-          <label for="loginUsername" class="block text-xs font-semibold mb-1.5 text-slate-700 dark:text-slate-300">
-            Username
-          </label>
-          <input
-            type="email"
-            id="loginUsername"
-            name="username"
-            required
-            autocomplete="username"
-            placeholder="ron.sarmenta@imerchmedia.net"
-            class="w-full rounded-xl px-3.5 py-2.5 text-sm glass-input"
-          />
+          <label for="loginUsername" class="block text-xs font-semibold mb-1.5 text-slate-700 dark:text-slate-300">Username</label>
+          <input type="email" id="loginUsername" name="username" required autocomplete="username" placeholder="ron.sarmenta@imerchmedia.net" class="w-full rounded-xl px-3.5 py-2.5 text-sm glass-input" />
         </div>
 
         <div>
-          <label for="loginPassword" class="block text-xs font-semibold mb-1.5 text-slate-700 dark:text-slate-300">
-            Password
-          </label>
+          <label for="loginPassword" class="block text-xs font-semibold mb-1.5 text-slate-700 dark:text-slate-300">Password</label>
           <div class="relative">
-            <input
-              type="password"
-              id="loginPassword"
-              name="password"
-              required
-              autocomplete="current-password"
-              placeholder="Enter password"
-              class="w-full rounded-xl px-3.5 py-2.5 pr-11 text-sm glass-input font-mono"
-            />
-            <button
-              type="button"
-              onclick="toggleLoginPassword()"
-              class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-sky-400 transition cursor-pointer"
-              title="Show / Hide Password"
-            >
+            <input type="password" id="loginPassword" name="password" required autocomplete="current-password" placeholder="Enter password" class="w-full rounded-xl px-3.5 py-2.5 pr-11 text-sm glass-input font-mono" />
+            <button type="button" onclick="toggleLoginPassword()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-sky-400 transition cursor-pointer" title="Show / Hide Password">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
@@ -224,11 +166,7 @@
 
         <div id="loginErrorMsg" class="hidden p-3 rounded-xl bg-rose-500/15 border border-rose-500/30 text-xs font-medium text-rose-600 dark:text-rose-300"></div>
 
-        <button
-          type="submit"
-          id="loginBtn"
-          class="w-full py-2.5 px-4 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 shadow-lg shadow-sky-500/25 transition flex items-center justify-center gap-2 cursor-pointer"
-        >
+        <button type="submit" id="loginBtn" class="w-full py-2.5 px-4 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 shadow-lg shadow-sky-500/25 transition flex items-center justify-center gap-2 cursor-pointer">
           <span>Sign In</span>
         </button>
       </form>
@@ -237,16 +175,10 @@
 
   <!-- MAIN SYSTEM SHELL -->
   <div id="mainSystemShell" class="hidden">
-    <!-- Top Navigation Header (Backend/Script buttons hidden for security) -->
     <header class="sticky top-0 z-30 glass-panel border-x-0 border-t-0 rounded-none">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3">
         <div class="flex items-center gap-3 min-w-0">
-          <img
-            id="headerBrandLogo"
-            src="imerchlogowhite1.png"
-            alt="iMerch Media Inc."
-            class="h-8 sm:h-9 w-auto object-contain shrink-0"
-          />
+          <img id="headerBrandLogo" src="imerchlogowhite1.png" alt="iMerch Media Inc." class="h-8 sm:h-9 w-auto object-contain shrink-0" />
           <div class="hidden sm:block h-6 w-px bg-slate-300 dark:bg-slate-700"></div>
           <div class="truncate">
             <div class="flex items-center gap-2">
@@ -257,7 +189,7 @@
                 IT Asset Core
               </span>
             </div>
-            <p class="text-[11px] text-slate-500 dark:text-slate-400 truncate">Equipment Registry &amp; Acknowledgement Receipt System</p>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400 truncate">Equipment Registry, Vesting Buyout &amp; Acknowledgement Receipt System</p>
           </div>
         </div>
 
@@ -265,10 +197,10 @@
           <span id="sessionUserLabel" class="hidden lg:inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-mono font-medium bg-emerald-500/10 text-emerald-600 dark:text-emerald-300 border border-emerald-500/20"></span>
 
           <button onclick="toggleTheme()" id="themeToggleBtn" class="p-2.5 rounded-xl glass-input hover:border-sky-400 transition cursor-pointer" title="Toggle Dark / Light Mode">
-            <svg id="iconSun" class="w-4 h-4 text-amber-400 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <svg class="w-4 h-4 text-amber-400 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
             </svg>
-            <svg id="iconMoon" class="w-4 h-4 text-slate-700 block dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <svg class="w-4 h-4 text-slate-700 block dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
             </svg>
           </button>
@@ -343,15 +275,15 @@
       <!-- Upper Workspace Grid -->
       <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-        <!-- Left Column (7 cols): Equipment Custody & Issuance Form -->
+        <!-- Left Column (7 cols): Equipment Custody & Ownership/Vesting Tabs -->
         <div class="lg:col-span-7 glass-panel rounded-2xl p-5 sm:p-6">
           <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-200/60 dark:border-slate-700/60">
             <div>
               <h2 class="text-base sm:text-lg font-bold flex items-center gap-2">
                 <span class="w-2.5 h-2.5 rounded-full bg-sky-500"></span>
-                Equipment Custody &amp; Issuance Form
+                Equipment Custody, Issuance &amp; Vesting
               </h2>
-              <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Borrowers sync to <code class="font-mono text-sky-500">Borrow_Return_Log</code>; logs &amp; returns sync to <code class="font-mono text-indigo-400">Equipment_Logs</code></p>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Manage issuance, returns, and 3-year 10% buyout ownership transfers</p>
             </div>
 
             <div class="px-3 py-1.5 rounded-xl bg-sky-500/15 border border-sky-500/30 flex items-center gap-2">
@@ -360,21 +292,29 @@
             </div>
           </div>
 
-          <div class="grid grid-cols-2 gap-2 p-1 rounded-xl bg-slate-200/70 dark:bg-slate-800/80 my-4">
-            <button type="button" id="tabNewEntry" onclick="setFormMode('new')" class="py-2 px-3 rounded-lg text-xs sm:text-sm font-semibold transition flex items-center justify-center gap-2 bg-white dark:bg-slate-700 text-sky-600 dark:text-sky-300 shadow-sm cursor-pointer">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <!-- 3-TAB BAR -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 p-1 rounded-xl bg-slate-200/70 dark:bg-slate-800/80 my-4">
+            <button type="button" id="tabNewEntry" onclick="setFormMode('new')" class="py-2 px-3 rounded-lg text-xs font-semibold transition flex items-center justify-center gap-1.5 bg-white dark:bg-slate-700 text-sky-600 dark:text-sky-300 shadow-sm cursor-pointer">
+              <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
               </svg>
-              New Asset Entry
+              <span>New Asset Entry</span>
             </button>
-            <button type="button" id="tabReassignEntry" onclick="setFormMode('reassign')" class="py-2 px-3 rounded-lg text-xs sm:text-sm font-semibold transition flex items-center justify-center gap-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white cursor-pointer">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <button type="button" id="tabReassignEntry" onclick="setFormMode('reassign')" class="py-2 px-3 rounded-lg text-xs font-semibold transition flex items-center justify-center gap-1.5 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white cursor-pointer">
+              <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
               </svg>
-              Borrow / Reassign Returned
+              <span>Borrow / Reassign Returned</span>
+            </button>
+            <button type="button" id="tabVestingTerms" onclick="setFormMode('vesting')" class="py-2 px-3 rounded-lg text-xs font-semibold transition flex items-center justify-center gap-1.5 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white cursor-pointer">
+              <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+              <span>Ownership &amp; Vesting Terms</span>
             </button>
           </div>
 
+          <!-- FORM 1 & 2: NEW ASSET & BORROW/REASSIGN -->
           <form id="equipmentForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
             <div id="reassignSelectorBox" class="hidden p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 space-y-2">
               <label for="availableAssetSelect" class="block text-xs font-bold uppercase tracking-wider text-amber-700 dark:text-amber-300">
@@ -502,6 +442,117 @@
               </button>
             </div>
           </form>
+
+          <!-- TAB 3: OWNERSHIP & VESTING TERMS (3-YEAR 10% BUYOUT + ATD GENERATOR) -->
+          <div id="vestingPanel" class="hidden space-y-4">
+            <div class="p-4 rounded-xl bg-indigo-500/10 border border-indigo-500/30 space-y-2">
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-300">
+                  3-Year Laptop / Equipment Ownership Vesting Policy
+                </span>
+                <span class="text-[11px] font-mono font-semibold px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-700 dark:text-indigo-200">
+                  10% Buyout Fee • 2 Cutoffs
+                </span>
+              </div>
+              <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                Equipment that has reached <strong>3 years (36 months)</strong> from purchase date—or approved for early buyout—may be transferred to the employee's personal ownership upon payment of a <strong>10% buyout fee</strong> deducted across <strong>two (2) payroll cutoffs</strong> via <strong>Authority to Deduct (ATD)</strong>.
+              </p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label for="vestingAssetSelect" class="block text-xs font-semibold mb-1.5 text-slate-700 dark:text-slate-300">
+                  Select Equipment / Laptop <span class="text-rose-500">*</span>
+                </label>
+                <select id="vestingAssetSelect" onchange="populateVestingDetails()" class="w-full rounded-xl px-3.5 py-2.5 text-sm glass-input font-medium">
+                  <option value="">-- Choose equipment for buyout --</option>
+                </select>
+              </div>
+              <div>
+                <label for="vestingDate" class="block text-xs font-semibold mb-1.5 text-slate-700 dark:text-slate-300">
+                  ATD Date <span class="text-rose-500">*</span>
+                </label>
+                <input type="date" id="vestingDate" class="w-full rounded-xl px-3.5 py-2.5 text-sm glass-input" />
+              </div>
+            </div>
+
+            <!-- Auto Age & Buyout Computation Cards -->
+            <div id="vestingSummaryCards" class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div class="p-3 rounded-xl glass-input">
+                <p class="text-[10px] font-bold uppercase text-slate-400">Equipment Age</p>
+                <p id="vestingAgeDisplay" class="text-sm font-extrabold font-mono mt-0.5">--</p>
+                <span id="vestingEligibilityBadge" class="inline-block mt-1 text-[10px] font-semibold px-1.5 py-0.5 rounded bg-slate-500/15 text-slate-400">Select unit</span>
+              </div>
+              <div class="p-3 rounded-xl glass-input">
+                <p class="text-[10px] font-bold uppercase text-slate-400">Original Value</p>
+                <p id="vestingOrigPriceDisplay" class="text-sm font-extrabold font-mono mt-0.5 text-slate-800 dark:text-slate-100">₱0.00</p>
+                <span class="block mt-1 text-[10px] text-slate-400">Acquisition Cost</span>
+              </div>
+              <div class="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
+                <p class="text-[10px] font-bold uppercase text-emerald-600 dark:text-emerald-300">10% Buyout Fee</p>
+                <p id="vestingBuyoutDisplay" class="text-sm font-extrabold font-mono mt-0.5 text-emerald-600 dark:text-emerald-300">₱0.00</p>
+                <span class="block mt-1 text-[10px] text-emerald-600/80 dark:text-emerald-300/80">Total Deduction</span>
+              </div>
+              <div class="p-3 rounded-xl bg-sky-500/10 border border-sky-500/30">
+                <p class="text-[10px] font-bold uppercase text-sky-600 dark:text-sky-300">Per Cutoff (÷ 2)</p>
+                <p id="vestingPerCutoffDisplay" class="text-sm font-extrabold font-mono mt-0.5 text-sky-600 dark:text-sky-300">₱0.00</p>
+                <span class="block mt-1 text-[10px] text-sky-600/80 dark:text-sky-300/80">2 Payroll Cutoffs</span>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label for="vestingEmployeeName" class="block text-xs font-semibold mb-1.5 text-slate-700 dark:text-slate-300">
+                  Employee Name <span class="text-rose-500">*</span>
+                </label>
+                <input type="text" id="vestingEmployeeName" placeholder="Employee full name" class="w-full rounded-xl px-3.5 py-2.5 text-sm glass-input" />
+              </div>
+              <div>
+                <label for="vestingClient" class="block text-xs font-semibold mb-1.5 text-slate-700 dark:text-slate-300">
+                  Client / Account <span class="text-rose-500">*</span>
+                </label>
+                <input type="text" id="vestingClient" placeholder="e.g., Internal / Client Account Name" class="w-full rounded-xl px-3.5 py-2.5 text-sm glass-input" />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label for="vestingCutoff1" class="block text-xs font-semibold mb-1.5 text-slate-700 dark:text-slate-300">
+                  1st Payroll Cutoff Period <span class="text-rose-500">*</span>
+                </label>
+                <input type="text" id="vestingCutoff1" placeholder="e.g., Nov 16–30, 2026" class="w-full rounded-xl px-3.5 py-2.5 text-sm glass-input" />
+              </div>
+              <div>
+                <label for="vestingCutoff2" class="block text-xs font-semibold mb-1.5 text-slate-700 dark:text-slate-300">
+                  2nd Payroll Cutoff Period <span class="text-rose-500">*</span>
+                </label>
+                <input type="text" id="vestingCutoff2" placeholder="e.g., Dec 01–15, 2026" class="w-full rounded-xl px-3.5 py-2.5 text-sm glass-input" />
+              </div>
+            </div>
+
+            <div>
+              <label for="vestingBuyoutOverride" class="block text-xs font-semibold mb-1.5 text-slate-700 dark:text-slate-300">
+                Total Buyout Amount (PHP ₱) — Auto-computed 10% (Editable if needed)
+              </label>
+              <input type="number" id="vestingBuyoutOverride" step="0.01" min="0" oninput="recalculateManualBuyout()" placeholder="0.00" class="w-full rounded-xl px-3.5 py-2.5 text-sm glass-input font-mono" />
+            </div>
+
+            <div class="pt-2 flex flex-wrap items-center justify-end gap-3">
+              <button type="button" onclick="openATDModalFromVesting()" class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-sky-600 dark:text-sky-300 bg-sky-500/15 hover:bg-sky-500/25 border border-sky-500/30 flex items-center gap-2 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                </svg>
+                <span>Preview &amp; Print ATD Form</span>
+              </button>
+
+              <button type="button" id="confirmVestingBtn" onclick="confirmOwnershipTransfer()" class="px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 shadow-lg shadow-emerald-500/25 flex items-center gap-2 transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>Save Ownership Transfer &amp; Generate ATD</span>
+              </button>
+            </div>
+          </div>
         </div>
 
         <!-- Right Column (5 cols): Interactive Asset Schedule & Handover Calendar -->
@@ -570,7 +621,7 @@
               I.T. Equipment Inventory &amp; Custody Ledger
             </h2>
             <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-              Print official Acknowledgement Receipts (AR), view Drive attachments, or mark units as returned for re-borrowing
+              Print official Acknowledgement Receipts (AR) or Authority to Deduct (ATD) buyout forms, view attachments, or mark units returned
             </p>
           </div>
 
@@ -579,7 +630,7 @@
               <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
-              <input type="text" id="searchInput" oninput="renderTable()" placeholder="Search IM-0001, employee, position..." class="w-full rounded-xl pl-9 pr-3.5 py-2 text-xs sm:text-sm glass-input" />
+              <input type="text" id="searchInput" oninput="debouncedRenderTable()" placeholder="Search IM-0001, employee, position..." class="w-full rounded-xl pl-9 pr-3.5 py-2 text-xs sm:text-sm glass-input" />
             </div>
 
             <select id="filterCategory" onchange="renderTable()" class="rounded-xl px-3 py-2 text-xs sm:text-sm glass-input">
@@ -599,6 +650,7 @@
               <option value="Assigned">Assigned</option>
               <option value="Borrowed">Borrowed</option>
               <option value="Available">Available / Returned</option>
+              <option value="Owned / Vested">Owned / Vested</option>
             </select>
 
             <button onclick="exportCSV()" class="px-3.5 py-2 rounded-xl text-xs font-semibold glass-input hover:border-sky-400 flex items-center gap-1.5 transition cursor-pointer" title="Export CSV">
@@ -632,7 +684,7 @@
   </div>
 
   <!-- MODAL 1: PRINTABLE OFFICIAL ACKNOWLEDGEMENT RECEIPT (AR) PREVIEW -->
-  <div id="printAreaModal" class="fixed inset-0 z-50 hidden bg-slate-950/75 backdrop-blur-sm overflow-y-auto p-4 sm:p-8 flex items-start justify-center">
+  <div id="printAreaModal" class="fixed inset-0 z-50 hidden bg-slate-950/75 overflow-y-auto p-4 sm:p-8 flex items-start justify-center">
     <div class="w-full max-w-3xl space-y-4 my-auto">
       <div class="no-print glass-panel rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3">
         <div class="flex items-center gap-2">
@@ -655,15 +707,10 @@
       <div id="arPrintableSheet" class="bg-white text-slate-900 rounded-xl shadow-2xl p-6 sm:p-10 border border-slate-300">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b-2 border-slate-900 pb-4 gap-4">
           <div class="flex items-center gap-3.5">
-            <img
-              id="arBrandLogo"
-              src="imerchlogo.png"
-              alt="iMerch Media Inc."
-              class="h-11 sm:h-12 w-auto object-contain shrink-0"
-            />
+            <img src="imerchlogo.png" alt="iMerch Media Inc." class="h-11 sm:h-12 w-auto object-contain shrink-0" />
             <div>
               <p class="text-xs font-bold tracking-wider text-slate-700 uppercase">Information Technology &amp; Systems Department</p>
-              <p class="text-[11px] text-slate-500 mt-0.5">Mandaluyong City, Metro Manila, Philippines • IT Asset Management Unit</p>
+              <p class="text-[11px] text-slate-500 mt-0.5">#493 Halcon St., Brgy. Malamig, Boni Ave., Mandaluyong City, Metro Manila</p>
             </div>
           </div>
           <div class="sm:text-right">
@@ -768,26 +815,88 @@
     </div>
   </div>
 
-  <!-- HIDDEN BACKEND URL MODAL (For admin use via console if ever needed) -->
-  <div id="configModal" class="fixed inset-0 z-50 hidden bg-slate-950/75 backdrop-blur-sm p-4 flex items-center justify-center">
-    <div class="glass-panel rounded-2xl w-full max-w-lg p-6 space-y-4">
-      <div class="flex items-center justify-between border-b border-slate-200/60 dark:border-slate-700/60 pb-3">
-        <h3 class="text-base font-bold">Backend Web App URL</h3>
-        <button onclick="closeConfigModal()" class="text-slate-400 hover:text-rose-400 cursor-pointer">✕</button>
-      </div>
-      <div>
-        <label for="scriptUrlInput" class="block text-xs font-semibold mb-1.5">Google Apps Script Web App URL</label>
-        <input type="url" id="scriptUrlInput" placeholder="https://script.google.com/macros/s/.../exec" class="w-full rounded-xl px-3.5 py-2.5 text-xs font-mono glass-input" />
-      </div>
-      <div class="flex flex-wrap items-center justify-between gap-2 pt-2">
-        <button type="button" onclick="clearLocalCache()" class="px-3.5 py-2 rounded-xl text-xs font-semibold text-rose-600 dark:text-rose-400 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/25 cursor-pointer">
-          Clear Local Cache
-        </button>
+  <!-- MODAL 2: PRINTABLE AUTHORITY TO DEDUCT (ATD) - OWNERSHIP & VESTING BUYOUT -->
+  <div id="atdAreaModal" class="fixed inset-0 z-50 hidden bg-slate-950/75 overflow-y-auto p-4 sm:p-8 flex items-start justify-center">
+    <div class="w-full max-w-3xl space-y-4 my-auto">
+      <div class="no-print glass-panel rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3">
         <div class="flex items-center gap-2">
-          <button type="button" onclick="closeConfigModal()" class="px-4 py-2 rounded-xl text-xs font-semibold glass-input cursor-pointer">Cancel</button>
-          <button type="button" onclick="saveScriptUrl()" class="px-4 py-2 rounded-xl text-xs font-bold text-white bg-sky-600 hover:bg-sky-500 shadow cursor-pointer">
-            Save &amp; Sync Now
+          <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+          <h3 class="text-sm font-bold text-slate-800 dark:text-white">Authority to Deduct (ATD) — 10% Buyout Preview</h3>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="window.print()" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 shadow-lg flex items-center gap-2 cursor-pointer">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+            </svg>
+            Print Authority to Deduct (ATD)
           </button>
+          <button onclick="closeATDModal()" class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold glass-input hover:bg-rose-500/20 hover:text-rose-400 transition cursor-pointer">
+            Close
+          </button>
+        </div>
+      </div>
+
+      <!-- OFFICIAL ATD DOCUMENT MATCHING SAMPLE FORMAT -->
+      <div id="atdPrintableSheet" class="bg-white text-[#1e3a5f] rounded-xl shadow-2xl p-8 sm:p-12 border-2 border-slate-900 font-serif">
+        <!-- Header -->
+        <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-8">
+          <div>
+            <img src="imerchlogo.png" alt="iMerch Media Inc." class="h-12 w-auto object-contain" />
+          </div>
+          <div class="text-xs sm:text-right leading-relaxed font-sans font-semibold text-[#1e3a5f]">
+            <p>#493 Halcon St., Brgy. Malamig, Boni Ave.</p>
+            <p>Mandaluyong City, Metro Manila, Philippines</p>
+            <p>Tel No.: 234-0517 &nbsp;&nbsp; Fax No.: 451-2493</p>
+          </div>
+        </div>
+
+        <!-- Employee / Date / Client Lines -->
+        <div class="space-y-2 text-sm font-bold text-[#1e3a5f] mb-8">
+          <div class="flex items-baseline gap-2">
+            <span>Date:</span>
+            <span id="atdDocDate" class="inline-block min-w-[200px] border-b border-[#1e3a5f] px-2 font-normal text-slate-900"></span>
+          </div>
+          <div class="flex items-baseline gap-2">
+            <span>EMPLOYEE NAME:</span>
+            <span id="atdDocEmployee" class="inline-block min-w-[260px] border-b border-[#1e3a5f] px-2 font-bold uppercase text-slate-900"></span>
+          </div>
+          <div class="flex items-baseline gap-2">
+            <span>CLIENT:</span>
+            <span id="atdDocClient" class="inline-block min-w-[220px] border-b border-[#1e3a5f] px-2 font-normal text-slate-900"></span>
+          </div>
+        </div>
+
+        <!-- Title -->
+        <div class="text-center mb-7">
+          <h2 class="text-xl font-extrabold uppercase tracking-wide text-[#1e3a5f] underline underline-offset-4">
+            AUTHORITY TO DEDUCT
+          </h2>
+        </div>
+
+        <!-- Body Clauses -->
+        <div class="space-y-6 text-[15px] leading-relaxed text-[#1e3a5f]">
+          <p>
+            This is to authorize <strong>iMerch Media Inc.</strong> to deduct the <strong>ten percent (10%) buyout fee</strong> from my salary to transfer full ownership of the issued laptop (<span id="atdDocAssetRef" class="font-semibold text-slate-900">please see attached document (AR) for details</span>).
+            (Total Original Value: <strong>Php</strong> <span id="atdDocOriginalPrice" class="inline-block min-w-[140px] border-b border-[#1e3a5f] px-2 text-center font-bold text-slate-900"></span>) to my name.
+          </p>
+
+          <p>
+            The total buyout amount of <strong>Php</strong> <span id="atdDocBuyoutTotal" class="inline-block min-w-[140px] border-b border-[#1e3a5f] px-2 text-center font-bold text-slate-900"></span> shall be deducted across <strong>two (2) payroll cutoffs only</strong> (for the payroll periods <span id="atdDocCutoff1" class="inline-block min-w-[165px] border-b border-[#1e3a5f] px-2 text-center font-semibold text-slate-900"></span> and <span id="atdDocCutoff2" class="inline-block min-w-[165px] border-b border-[#1e3a5f] px-2 text-center font-semibold text-slate-900"></span>), equivalent to <strong>Php</strong> <span id="atdDocPerCutoff" class="inline-block min-w-[130px] border-b border-[#1e3a5f] px-2 text-center font-bold text-slate-900"></span> per cutoff.
+          </p>
+
+          <p>
+            I understand that upon completion of these two (2) specific deductions, the laptop shall officially become my personal property, and the company shall release me from any accountability for the said equipment.
+          </p>
+        </div>
+
+        <!-- Signature Block -->
+        <div class="mt-16 flex justify-end">
+          <div class="w-80 text-center">
+            <p id="atdDocSignName" class="font-bold uppercase text-sm text-slate-900 mb-1"></p>
+            <div class="border-t border-[#1e3a5f] pt-1.5">
+              <p class="text-xs font-bold tracking-wide text-[#1e3a5f]">(SIGNATURE OVER PRINTED NAME)</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -799,7 +908,7 @@
     const STORAGE_KEY_THEME = 'imerch_theme_mode';
     const STORAGE_KEY_TOKEN = 'imerch_it_session_token';
     const STORAGE_KEY_USER = 'imerch_it_session_user';
-    const DEFAULT_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwJwmNcT9U9JyrqhgI1yvo1UsHtdwv6huf-38EJ3eaFaLHfVPnqAozNJyvBgcTDIqtQtw/exec';
+    const DEFAULT_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz9mjSkUQiPfOKRqbJ49Jsiz5ofudKommJtvJf8zKuAExotcJytxCbbleuzADfK5ibovQ/exec';
 
     const LOGO_LIGHT = 'imerchlogo.png';
     const LOGO_DARK = 'imerchlogowhite1.png';
@@ -808,6 +917,7 @@
     let currentFormMode = 'new';
     let calendarDate = new Date();
     let selectedCalendarDateStr = null;
+    let searchDebounceTimer = null;
 
     window.addEventListener('DOMContentLoaded', () => {
       initTheme();
@@ -905,7 +1015,7 @@
       sessionStorage.removeItem(STORAGE_KEY_TOKEN);
       sessionStorage.removeItem(STORAGE_KEY_USER);
       closePrintModal();
-      closeConfigModal();
+      closeATDModal();
       showLoginUI();
 
       if (scriptUrl && token) {
@@ -914,20 +1024,15 @@
             method: 'POST',
             body: JSON.stringify({ action: 'logout', token: token })
           });
-        } catch (err) {
-          // Ignore network error on logout
-        }
+        } catch (err) {}
       }
       showToast('Logged out.', 'info');
     }
 
     function syncLogosWithTheme(isDark) {
       const headerLogo = document.getElementById('headerBrandLogo');
-      const arLogo = document.getElementById('arBrandLogo');
       const loginLogo = document.getElementById('loginBrandLogo');
-
       if (headerLogo) headerLogo.src = isDark ? LOGO_DARK : LOGO_LIGHT;
-      if (arLogo) arLogo.src = isDark ? LOGO_DARK : LOGO_LIGHT;
       if (loginLogo) loginLogo.src = isDark ? LOGO_DARK : LOGO_LIGHT;
     }
 
@@ -1017,12 +1122,10 @@
             });
             saveAssetsLocal();
             refreshAllViews();
-            return;
           }
         } catch (err) {
           console.error('Google Sheets sync error:', err);
-          showToast('Hindi ma-reach ang Google Sheets ngayon; naka-empty/cached view muna.', 'warning');
-          return;
+          showToast('Hindi ma-reach ang Google Sheets ngayon; naka-cached view muna.', 'warning');
         }
       }
     }
@@ -1031,18 +1134,11 @@
       localStorage.setItem(STORAGE_KEY_ASSETS, JSON.stringify(assets));
     }
 
-    function clearLocalCache() {
-      localStorage.removeItem(STORAGE_KEY_ASSETS);
-      assets = [];
-      refreshAllViews();
-      closeConfigModal();
-      showToast('Na-clear na ang local cache. Malinis na ulit.', 'info');
-    }
-
     function refreshAllViews() {
       updateKPIs();
       updateNextAssetTagDisplay();
       populateAvailableDropdown();
+      populateVestingDropdown();
       renderTable();
       renderCalendar();
     }
@@ -1070,24 +1166,42 @@
       currentFormMode = mode;
       const tabNew = document.getElementById('tabNewEntry');
       const tabReassign = document.getElementById('tabReassignEntry');
+      const tabVesting = document.getElementById('tabVestingTerms');
+
+      const equipForm = document.getElementById('equipmentForm');
+      const vestingPanel = document.getElementById('vestingPanel');
       const reassignBox = document.getElementById('reassignSelectorBox');
       const submitBtnText = document.getElementById('submitBtnText');
 
+      const inactiveTabClass = 'py-2 px-3 rounded-lg text-xs font-semibold transition flex items-center justify-center gap-1.5 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white cursor-pointer';
+      tabNew.className = inactiveTabClass;
+      tabReassign.className = inactiveTabClass;
+      tabVesting.className = inactiveTabClass;
+
       if (mode === 'new') {
-        tabNew.className = 'py-2 px-3 rounded-lg text-xs sm:text-sm font-semibold transition flex items-center justify-center gap-2 bg-white dark:bg-slate-700 text-sky-600 dark:text-sky-300 shadow-sm cursor-pointer';
-        tabReassign.className = 'py-2 px-3 rounded-lg text-xs sm:text-sm font-semibold transition flex items-center justify-center gap-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white cursor-pointer';
+        tabNew.className = 'py-2 px-3 rounded-lg text-xs font-semibold transition flex items-center justify-center gap-1.5 bg-white dark:bg-slate-700 text-sky-600 dark:text-sky-300 shadow-sm cursor-pointer';
+        equipForm.classList.remove('hidden');
+        vestingPanel.classList.add('hidden');
         reassignBox.classList.add('hidden');
         submitBtnText.textContent = 'Save Equipment & Generate Tag';
         resetForm(false);
         updateNextAssetTagDisplay();
-      } else {
-        tabReassign.className = 'py-2 px-3 rounded-lg text-xs sm:text-sm font-semibold transition flex items-center justify-center gap-2 bg-white dark:bg-slate-700 text-amber-600 dark:text-amber-300 shadow-sm cursor-pointer';
-        tabNew.className = 'py-2 px-3 rounded-lg text-xs sm:text-sm font-semibold transition flex items-center justify-center gap-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white cursor-pointer';
+      } else if (mode === 'reassign') {
+        tabReassign.className = 'py-2 px-3 rounded-lg text-xs font-semibold transition flex items-center justify-center gap-1.5 bg-white dark:bg-slate-700 text-amber-600 dark:text-amber-300 shadow-sm cursor-pointer';
+        equipForm.classList.remove('hidden');
+        vestingPanel.classList.add('hidden');
         reassignBox.classList.remove('hidden');
         submitBtnText.textContent = 'Confirm Borrow / Reassign & Issue AR';
         populateAvailableDropdown();
         document.getElementById('displayAssetId').textContent = 'SELECT UNIT';
         document.getElementById('status').value = 'Borrowed';
+      } else if (mode === 'vesting') {
+        tabVesting.className = 'py-2 px-3 rounded-lg text-xs font-semibold transition flex items-center justify-center gap-1.5 bg-white dark:bg-slate-700 text-emerald-600 dark:text-emerald-300 shadow-sm cursor-pointer';
+        equipForm.classList.add('hidden');
+        vestingPanel.classList.remove('hidden');
+        document.getElementById('vestingDate').value = new Date().toISOString().split('T')[0];
+        populateVestingDropdown();
+        document.getElementById('displayAssetId').textContent = 'BUYOUT / ATD';
       }
     }
 
@@ -1131,6 +1245,259 @@
 
       noteEl.textContent = `Previous Record: ${item.employeeName}${item.position ? ' (' + item.position + ')' : ''} — ${item.historyNote || 'Ready for borrowing/reassignment.'}`;
       noteEl.classList.remove('hidden');
+    }
+
+    /* ================= OWNERSHIP & VESTING TERMS LOGIC ================= */
+    function calculateAssetAge(datePurchasedStr) {
+      if (!datePurchasedStr) return { years: 0, months: 0, totalMonths: 0, isEligible3Yrs: false };
+      const start = new Date(datePurchasedStr);
+      const now = new Date();
+      if (isNaN(start.getTime())) return { years: 0, months: 0, totalMonths: 0, isEligible3Yrs: false };
+
+      let totalMonths = (now.getFullYear() - start.getFullYear()) * 12 + (now.getMonth() - start.getMonth());
+      if (now.getDate() < start.getDate()) totalMonths--;
+      if (totalMonths < 0) totalMonths = 0;
+
+      const years = Math.floor(totalMonths / 12);
+      const months = totalMonths % 12;
+      return {
+        years,
+        months,
+        totalMonths,
+        isEligible3Yrs: totalMonths >= 36
+      };
+    }
+
+    function populateVestingDropdown() {
+      const select = document.getElementById('vestingAssetSelect');
+      if (!select) return;
+      const prevVal = select.value;
+      select.innerHTML = '<option value="">-- Choose equipment / laptop for buyout (' + assets.length + ' units) --</option>';
+
+      assets.forEach(item => {
+        const age = calculateAssetAge(item.datePurchased);
+        const tag = age.isEligible3Yrs ? '✓ 3+ Yrs' : `${age.years}y ${age.months}m`;
+        const opt = document.createElement('option');
+        opt.value = item.assetId;
+        opt.textContent = `${item.assetId} [${tag}] • ${item.employeeName} — ${item.itemDetails.substring(0, 42)}`;
+        select.appendChild(opt);
+      });
+
+      if (prevVal && assets.some(a => a.assetId === prevVal)) {
+        select.value = prevVal;
+      }
+    }
+
+    function populateVestingDetails() {
+      const assetId = document.getElementById('vestingAssetSelect').value;
+      const badge = document.getElementById('vestingEligibilityBadge');
+
+      if (!assetId) {
+        document.getElementById('displayAssetId').textContent = 'BUYOUT / ATD';
+        document.getElementById('vestingAgeDisplay').textContent = '--';
+        document.getElementById('vestingOrigPriceDisplay').textContent = '₱0.00';
+        document.getElementById('vestingBuyoutDisplay').textContent = '₱0.00';
+        document.getElementById('vestingPerCutoffDisplay').textContent = '₱0.00';
+        document.getElementById('vestingBuyoutOverride').value = '';
+        badge.textContent = 'Select unit';
+        badge.className = 'inline-block mt-1 text-[10px] font-semibold px-1.5 py-0.5 rounded bg-slate-500/15 text-slate-400';
+        return;
+      }
+
+      const item = assets.find(a => a.assetId === assetId);
+      if (!item) return;
+
+      document.getElementById('displayAssetId').textContent = item.assetId;
+      document.getElementById('vestingEmployeeName').value = item.employeeName.replace(/^Unassigned\s*\(|\)$/g, '');
+
+      const age = calculateAssetAge(item.datePurchased);
+      document.getElementById('vestingAgeDisplay').textContent = `${age.years} yr${age.years !== 1 ? 's' : ''}, ${age.months} mo`;
+
+      if (age.isEligible3Yrs) {
+        badge.textContent = '3-Yr Vested Eligible';
+        badge.className = 'inline-block mt-1 text-[10px] font-semibold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-600 dark:text-emerald-300';
+      } else {
+        badge.textContent = 'Early / Management Buyout';
+        badge.className = 'inline-block mt-1 text-[10px] font-semibold px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-600 dark:text-amber-300';
+      }
+
+      const origPrice = Number(item.price) || 0;
+      const buyoutFee = Number((origPrice * 0.10).toFixed(2));
+      const perCutoff = Number((buyoutFee / 2).toFixed(2));
+
+      document.getElementById('vestingOrigPriceDisplay').textContent = formatPHP(origPrice);
+      document.getElementById('vestingBuyoutDisplay').textContent = formatPHP(buyoutFee);
+      document.getElementById('vestingPerCutoffDisplay').textContent = formatPHP(perCutoff);
+      document.getElementById('vestingBuyoutOverride').value = buyoutFee.toFixed(2);
+    }
+
+    function recalculateManualBuyout() {
+      const buyoutVal = parseFloat(document.getElementById('vestingBuyoutOverride').value) || 0;
+      const perCutoff = buyoutVal / 2;
+      document.getElementById('vestingBuyoutDisplay').textContent = formatPHP(buyoutVal);
+      document.getElementById('vestingPerCutoffDisplay').textContent = formatPHP(perCutoff);
+    }
+
+    function formatLongDate(isoStr) {
+      if (!isoStr) return '';
+      const d = new Date(isoStr + 'T00:00:00');
+      if (isNaN(d.getTime())) return isoStr;
+      return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    }
+
+    function openATDModalFromVesting() {
+      const assetId = document.getElementById('vestingAssetSelect').value;
+      if (!assetId) {
+        showToast('Pumili muna ng equipment sa Ownership & Vesting Terms.', 'warning');
+        return;
+      }
+      const item = assets.find(a => a.assetId === assetId);
+      if (!item) return;
+
+      const atdDate = document.getElementById('vestingDate').value || new Date().toISOString().split('T')[0];
+      const empName = document.getElementById('vestingEmployeeName').value.trim() || item.employeeName;
+      const clientName = document.getElementById('vestingClient').value.trim() || item.department;
+      const cutoff1 = document.getElementById('vestingCutoff1').value.trim() || '1st Payroll Cutoff';
+      const cutoff2 = document.getElementById('vestingCutoff2').value.trim() || '2nd Payroll Cutoff';
+
+      const origPrice = Number(item.price) || 0;
+      const buyoutFee = parseFloat(document.getElementById('vestingBuyoutOverride').value);
+      const finalBuyout = !isNaN(buyoutFee) ? buyoutFee : (origPrice * 0.10);
+      const perCutoff = finalBuyout / 2;
+
+      populateAndShowATD({
+        date: formatLongDate(atdDate),
+        employeeName: empName,
+        client: clientName,
+        assetRef: `${item.assetId} — ${item.itemDetails}${item.serialNumber ? ' (S/N: ' + item.serialNumber + ')' : ''}`,
+        originalPrice: origPrice,
+        buyoutTotal: finalBuyout,
+        cutoff1: cutoff1,
+        cutoff2: cutoff2,
+        perCutoff: perCutoff
+      });
+    }
+
+    function openQuickATDModal(assetId) {
+      const item = assets.find(a => a.assetId === assetId);
+      if (!item) return;
+      const origPrice = Number(item.price) || 0;
+      const buyoutFee = origPrice * 0.10;
+      const todayStr = new Date().toISOString().split('T')[0];
+
+      populateAndShowATD({
+        date: formatLongDate(todayStr),
+        employeeName: item.employeeName,
+        client: item.department,
+        assetRef: `${item.assetId} — ${item.itemDetails}${item.serialNumber ? ' (S/N: ' + item.serialNumber + ')' : ''}`,
+        originalPrice: origPrice,
+        buyoutTotal: buyoutFee,
+        cutoff1: '____________________',
+        cutoff2: '____________________',
+        perCutoff: buyoutFee / 2
+      });
+    }
+
+    function populateAndShowATD(data) {
+      document.getElementById('atdDocDate').textContent = data.date;
+      document.getElementById('atdDocEmployee').textContent = data.employeeName;
+      document.getElementById('atdDocClient').textContent = data.client;
+      document.getElementById('atdDocAssetRef').textContent = data.assetRef;
+      document.getElementById('atdDocOriginalPrice').textContent = Number(data.originalPrice || 0).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      document.getElementById('atdDocBuyoutTotal').textContent = Number(data.buyoutTotal || 0).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      document.getElementById('atdDocCutoff1').textContent = data.cutoff1;
+      document.getElementById('atdDocCutoff2').textContent = data.cutoff2;
+      document.getElementById('atdDocPerCutoff').textContent = Number(data.perCutoff || 0).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      document.getElementById('atdDocSignName').textContent = data.employeeName;
+
+      closePrintModal();
+      const modal = document.getElementById('atdAreaModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('active-print-modal');
+    }
+
+    function closeATDModal() {
+      const modal = document.getElementById('atdAreaModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('active-print-modal');
+    }
+
+    async function confirmOwnershipTransfer() {
+      const token = getSessionToken();
+      if (!token) {
+        showLoginUI();
+        return;
+      }
+
+      const assetId = document.getElementById('vestingAssetSelect').value;
+      if (!assetId) {
+        showToast('Pumili muna ng equipment na ita-transfer.', 'error');
+        return;
+      }
+
+      const idx = assets.findIndex(a => a.assetId === assetId);
+      if (idx === -1) return;
+
+      const empName = document.getElementById('vestingEmployeeName').value.trim();
+      const clientName = document.getElementById('vestingClient').value.trim();
+      const cutoff1 = document.getElementById('vestingCutoff1').value.trim();
+      const cutoff2 = document.getElementById('vestingCutoff2').value.trim();
+      const atdDate = document.getElementById('vestingDate').value || new Date().toISOString().split('T')[0];
+
+      if (!empName || !clientName || !cutoff1 || !cutoff2) {
+        showToast('Kumpletuhin ang Employee Name, Client, at 2 Payroll Cutoffs.', 'error');
+        return;
+      }
+
+      const origPrice = Number(assets[idx].price) || 0;
+      const buyoutFee = parseFloat(document.getElementById('vestingBuyoutOverride').value);
+      const finalBuyout = !isNaN(buyoutFee) ? buyoutFee : (origPrice * 0.10);
+      const perCutoff = finalBuyout / 2;
+
+      const histNote = `Ownership Buyout (10% = ${formatPHP(finalBuyout)} | ${formatPHP(perCutoff)}/cutoff for ${cutoff1} & ${cutoff2}) | Client: ${clientName} | ATD Date: ${atdDate}`;
+
+      assets[idx].employeeName = empName;
+      assets[idx].status = 'Owned / Vested';
+      assets[idx].dateReceived = atdDate;
+      assets[idx].historyNote = histNote;
+
+      saveAssetsLocal();
+      refreshAllViews();
+
+      const btn = document.getElementById('confirmVestingBtn');
+      btn.disabled = true;
+
+      const scriptUrl = getActiveScriptUrl();
+      if (scriptUrl) {
+        try {
+          await fetch(scriptUrl, {
+            method: 'POST',
+            body: JSON.stringify({
+              token: token,
+              action: 'vesting',
+              assetId: assets[idx].assetId,
+              employeeName: empName,
+              position: assets[idx].position || '',
+              department: assets[idx].department,
+              category: assets[idx].category,
+              itemDetails: assets[idx].itemDetails,
+              serialNumber: assets[idx].serialNumber || '',
+              datePurchased: assets[idx].datePurchased,
+              price: origPrice,
+              dateReleased: atdDate,
+              status: 'Owned / Vested',
+              historyNote: histNote,
+              existingArLink: isSafeHttpsUrl(assets[idx].arFileUrl) ? assets[idx].arFileUrl : ''
+            })
+          });
+        } catch (err) {
+          console.error('Vesting sync error:', err);
+        }
+      }
+
+      btn.disabled = false;
+      showToast(`Ownership buyout saved for ${assetId}! Opening ATD form...`, 'success');
+      openATDModalFromVesting();
     }
 
     function setDefaultFormDates(onlyReceived = false) {
@@ -1200,7 +1567,7 @@
       }
 
       submitBtn.disabled = true;
-      submitBtn.innerHTML = `<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path></svg> Processing...`;
+      submitBtn.textContent = 'Processing...';
 
       const finalizeRecord = async (base64Data = null, fileName = null) => {
         const scriptUrl = getActiveScriptUrl();
@@ -1282,7 +1649,7 @@
 
         submitBtn.disabled = false;
         submitBtn.innerHTML = originalBtnHtml;
-        showToast(`Asset ${targetAssetId} saved for ${employeeName} (${position})!`, 'success');
+        showToast(`Asset ${targetAssetId} saved for ${employeeName}!`, 'success');
       };
 
       if (file) {
@@ -1360,6 +1727,11 @@
       document.getElementById('kpiValue').textContent = formatPHP(totalVal);
     }
 
+    function debouncedRenderTable() {
+      clearTimeout(searchDebounceTimer);
+      searchDebounceTimer = setTimeout(renderTable, 120);
+    }
+
     function renderTable() {
       const tbody = document.getElementById('equipmentTableBody');
       const query = document.getElementById('searchInput').value.toLowerCase().trim();
@@ -1393,30 +1765,43 @@
         return;
       }
 
-      tbody.innerHTML = filtered.map(item => {
+      const rowsHtml = new Array(filtered.length);
+      for (let i = 0; i < filtered.length; i++) {
+        const item = filtered[i];
         const safeId = escapeHtml(item.assetId);
         const statusBadge = getStatusBadgeHtml(item.status);
         const hasSafeUrl = isSafeHttpsUrl(item.arFileUrl);
+        const age = calculateAssetAge(item.datePurchased);
 
         const arCell = item.arFileName
           ? (hasSafeUrl
               ? `<a href="${escapeHtml(item.arFileUrl)}" target="_blank" rel="noopener noreferrer"
                     class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium bg-sky-500/15 text-sky-600 dark:text-sky-300 hover:bg-sky-500/25 transition">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" /></svg>
                     ${escapeHtml(item.arFileName.length > 18 ? item.arFileName.substring(0, 16) + '...' : item.arFileName)}
                  </a>`
               : `<span class="text-xs text-slate-500 dark:text-slate-400">${escapeHtml(item.arFileName)}</span>`)
-          : `<span class="text-xs text-slate-400 italic">No file attached</span>`;
+          : `<span class="text-xs text-slate-400 italic">No file</span>`;
 
-        const actionBtn = item.status !== 'Available'
-          ? `<button onclick="markAsReturned('${safeId}')" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-amber-500/15 text-amber-600 dark:text-amber-300 hover:bg-amber-500/25 transition cursor-pointer" title="Mark unit as returned">
+        let actionBtn = '';
+        if (item.status === 'Owned / Vested') {
+          actionBtn = `<button onclick="openQuickATDModal('${safeId}')" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500/15 text-emerald-600 dark:text-emerald-300 hover:bg-emerald-500/25 transition cursor-pointer" title="Print Authority to Deduct">
+               ATD
+             </button>`;
+        } else if (item.status !== 'Available') {
+          actionBtn = `<button onclick="markAsReturned('${safeId}')" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-amber-500/15 text-amber-600 dark:text-amber-300 hover:bg-amber-500/25 transition cursor-pointer" title="Mark unit as returned">
                Return
-             </button>`
-          : `<button onclick="quickBorrow('${safeId}')" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500/15 text-emerald-600 dark:text-emerald-300 hover:bg-emerald-500/25 transition cursor-pointer" title="Borrow/Reassign this available unit">
+             </button>`;
+        } else {
+          actionBtn = `<button onclick="quickBorrow('${safeId}')" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500/15 text-emerald-600 dark:text-emerald-300 hover:bg-emerald-500/25 transition cursor-pointer" title="Borrow/Reassign this available unit">
                Borrow
              </button>`;
+        }
 
-        return `
+        const vestingBadge = age.isEligible3Yrs && item.status !== 'Owned / Vested'
+          ? `<span class="ml-1 inline-block text-[10px] font-bold px-1.5 py-0.5 rounded bg-purple-500/15 text-purple-600 dark:text-purple-300" title="3+ Years Old - Eligible for 10% Buyout">3Y+ Vested</span>`
+          : '';
+
+        rowsHtml[i] = `
           <tr class="hover:bg-slate-200/35 dark:hover:bg-slate-800/45 transition">
             <td class="py-3.5 px-4 align-top">
               <span class="font-mono font-bold text-xs sm:text-sm px-2.5 py-1 rounded-lg bg-indigo-500/15 text-indigo-600 dark:text-indigo-300 border border-indigo-500/25">
@@ -1431,7 +1816,7 @@
             <td class="py-3.5 px-4 align-top max-w-xs">
               <span class="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 mb-1">
                 ${escapeHtml(item.category)}
-              </span>
+              </span>${vestingBadge}
               <p class="text-xs text-slate-700 dark:text-slate-300 leading-snug">${escapeHtml(item.itemDetails)}</p>
               ${item.serialNumber ? `<p class="text-[11px] font-mono text-slate-400 mt-0.5">S/N: ${escapeHtml(item.serialNumber)}</p>` : ''}
             </td>
@@ -1450,18 +1835,20 @@
             </td>
             <td class="py-3.5 px-4 align-top text-right whitespace-nowrap">
               <div class="inline-flex items-center gap-1.5">
-                <button onclick="openPrintARModal('${safeId}')" class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-sky-500/15 text-sky-600 dark:text-sky-300 hover:bg-sky-500/25 border border-sky-500/25 inline-flex items-center gap-1 transition cursor-pointer" title="Print Official Acknowledgement Receipt">
-                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-                  </svg>
-                  Print AR
+                <button onclick="openPrintARModal('${safeId}')" class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-sky-500/15 text-sky-600 dark:text-sky-300 hover:bg-sky-500/25 border border-sky-500/25 transition cursor-pointer" title="Print Official Acknowledgement Receipt">
+                  AR
+                </button>
+                <button onclick="quickVestingBuyout('${safeId}')" class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-purple-500/15 text-purple-600 dark:text-purple-300 hover:bg-purple-500/25 border border-purple-500/25 transition cursor-pointer" title="10% Ownership Buyout / ATD">
+                  Buyout
                 </button>
                 ${actionBtn}
               </div>
             </td>
           </tr>
         `;
-      }).join('');
+      }
+
+      tbody.innerHTML = rowsHtml.join('');
     }
 
     function quickBorrow(assetId) {
@@ -1472,12 +1859,23 @@
       showToast(`Selected ${assetId} for borrowing.`, 'info');
     }
 
+    function quickVestingBuyout(assetId) {
+      setFormMode('vesting');
+      document.getElementById('vestingAssetSelect').value = assetId;
+      populateVestingDetails();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      showToast(`Loaded ${assetId} into Ownership & Vesting Terms.`, 'info');
+    }
+
     function getStatusBadgeHtml(status) {
       if (status === 'Assigned') {
         return `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/15 text-emerald-600 dark:text-emerald-300 border border-emerald-500/25"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Assigned</span>`;
       }
       if (status === 'Borrowed') {
         return `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-indigo-500/15 text-indigo-600 dark:text-indigo-300 border border-indigo-500/25"><span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>Borrowed</span>`;
+      }
+      if (status === 'Owned / Vested') {
+        return `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-purple-500/15 text-purple-600 dark:text-purple-300 border border-purple-500/25"><span class="w-1.5 h-1.5 rounded-full bg-purple-500"></span>Owned / Vested</span>`;
       }
       return `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-500/15 text-amber-600 dark:text-amber-300 border border-amber-500/25"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>Available</span>`;
     }
@@ -1491,18 +1889,25 @@
       const firstDayIndex = new Date(year, month, 1).getDay();
       const daysInMonth = new Date(year, month + 1, 0).getDate();
       const grid = document.getElementById('calendarGrid');
-      grid.innerHTML = '';
 
+      const receivedSet = new Set();
+      const purchasedSet = new Set();
+      for (let i = 0; i < assets.length; i++) {
+        if (assets[i].dateReceived) receivedSet.add(assets[i].dateReceived);
+        if (assets[i].datePurchased) purchasedSet.add(assets[i].datePurchased);
+      }
+
+      const cells = [];
       for (let i = 0; i < firstDayIndex; i++) {
-        grid.innerHTML += `<div class="p-2"></div>`;
+        cells.push(`<div class="p-2"></div>`);
       }
 
       const todayStr = new Date().toISOString().split('T')[0];
 
       for (let day = 1; day <= daysInMonth; day++) {
         const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-        const hasReceived = assets.some(a => a.dateReceived === dateStr);
-        const hasPurchased = assets.some(a => a.datePurchased === dateStr);
+        const hasReceived = receivedSet.has(dateStr);
+        const hasPurchased = purchasedSet.has(dateStr);
         const isSelected = selectedCalendarDateStr === dateStr;
         const isToday = dateStr === todayStr;
 
@@ -1523,13 +1928,15 @@
           </div>`;
         }
 
-        grid.innerHTML += `
+        cells.push(`
           <button type="button" onclick="selectCalendarDate('${dateStr}')" class="${classes}">
             <span>${day}</span>
             ${dots}
           </button>
-        `;
+        `);
       }
+
+      grid.innerHTML = cells.join('');
     }
 
     function changeMonth(delta) {
@@ -1591,9 +1998,6 @@
       const item = assets.find(a => a.assetId === assetId);
       if (!item) return;
 
-      const isDark = document.documentElement.classList.contains('dark');
-      syncLogosWithTheme(isDark);
-
       document.getElementById('arAssetId').textContent = item.assetId;
       document.getElementById('arDateIssued').textContent = item.dateReceived;
       document.getElementById('arIssuanceType').textContent = `${item.category} • ${item.status}`;
@@ -1619,32 +2023,16 @@
         histBox.classList.add('hidden');
       }
 
-      document.getElementById('printAreaModal').classList.remove('hidden');
+      closeATDModal();
+      const modal = document.getElementById('printAreaModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('active-print-modal');
     }
 
     function closePrintModal() {
-      document.getElementById('printAreaModal').classList.add('hidden');
-    }
-
-    function openConfigModal() {
-      document.getElementById('scriptUrlInput').value = getActiveScriptUrl();
-      document.getElementById('configModal').classList.remove('hidden');
-    }
-
-    function closeConfigModal() {
-      document.getElementById('configModal').classList.add('hidden');
-    }
-
-    function saveScriptUrl() {
-      const url = document.getElementById('scriptUrlInput').value.trim();
-      if (url && !isSafeHttpsUrl(url)) {
-        showToast('Please enter a valid https:// URL.', 'error');
-        return;
-      }
-      localStorage.setItem(STORAGE_KEY_SCRIPT_URL, url);
-      closeConfigModal();
-      loadAssets();
-      showToast(url ? 'Google Apps Script URL saved! Syncing...' : 'URL cleared.', 'success');
+      const modal = document.getElementById('printAreaModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('active-print-modal');
     }
 
     function exportCSV() {
@@ -1704,21 +2092,20 @@
     function showToast(message, type = 'info') {
       const container = document.getElementById('toastContainer');
       const colors = {
-        success: 'border-emerald-500/40 bg-emerald-950/90 text-emerald-200',
-        error: 'border-rose-500/40 bg-rose-950/90 text-rose-200',
-        warning: 'border-amber-500/40 bg-amber-950/90 text-amber-200',
+        success: 'border-emerald-500/40 bg-emerald-950/95 text-emerald-200',
+        error: 'border-rose-500/40 bg-rose-950/95 text-rose-200',
+        warning: 'border-amber-500/40 bg-amber-950/95 text-amber-200',
         info: 'border-sky-500/40 bg-slate-900/95 text-sky-200'
       };
       const toast = document.createElement('div');
-      toast.className = `pointer-events-auto px-4 py-3 rounded-xl border backdrop-blur-md shadow-xl text-xs font-semibold flex items-center gap-2.5 transition-all duration-300 ${colors[type] || colors.info}`;
+      toast.className = `pointer-events-auto px-4 py-3 rounded-xl border shadow-xl text-xs font-semibold flex items-center gap-2.5 transition-opacity duration-200 ${colors[type] || colors.info}`;
       toast.innerHTML = `<span>${escapeHtml(message)}</span>`;
       container.appendChild(toast);
 
       setTimeout(() => {
         toast.style.opacity = '0';
-        toast.style.transform = 'translateY(-8px)';
-        setTimeout(() => toast.remove(), 300);
-      }, 3600);
+        setTimeout(() => toast.remove(), 220);
+      }, 3400);
     }
   </script>
 </body>
