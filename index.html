@@ -25,27 +25,45 @@
   </script>
   <style>
     :root {
-      --bg-base: #f1f5f9;
-      --panel-bg: rgba(255, 255, 255, 0.94);
+      --bg-base: #0b1324;
+      --panel-bg: rgba(255, 255, 255, 0.90);
       --panel-border: rgba(203, 213, 225, 0.85);
-      --panel-shadow: 0 6px 24px rgba(15, 23, 42, 0.06);
+      --panel-shadow: 0 8px 28px rgba(15, 23, 42, 0.14);
       --input-bg: #ffffff;
+      --wallpaper-scrim: linear-gradient(180deg, rgba(241, 245, 249, 0.78) 0%, rgba(226, 232, 240, 0.86) 100%);
     }
 
     html.dark {
-      --bg-base: #070b14;
-      --panel-bg: rgba(15, 23, 42, 0.92);
-      --panel-border: rgba(51, 65, 85, 0.65);
-      --panel-shadow: 0 8px 28px rgba(0, 0, 0, 0.38);
-      --input-bg: rgba(30, 41, 59, 0.92);
+      --bg-base: #050914;
+      --panel-bg: rgba(10, 17, 34, 0.84);
+      --panel-border: rgba(56, 189, 248, 0.24);
+      --panel-shadow: 0 10px 32px rgba(0, 0, 0, 0.55);
+      --input-bg: rgba(15, 23, 42, 0.92);
+      --wallpaper-scrim: linear-gradient(180deg, rgba(5, 10, 22, 0.68) 0%, rgba(7, 13, 28, 0.82) 100%);
     }
 
     body {
       background-color: var(--bg-base);
-      background-image:
-        radial-gradient(circle at 12% 15%, rgba(14, 165, 233, 0.12), transparent 38%),
-        radial-gradient(circle at 88% 15%, rgba(99, 102, 241, 0.12), transparent 40%);
       min-height: 100vh;
+    }
+
+    /* Persistent wallpaper layer visible both on Login and inside Main System */
+    #systemWallpaperLayer {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background-image: url('background2026.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    #systemWallpaperLayer::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: var(--wallpaper-scrim);
     }
 
     /* GPU-friendly lightweight panels (eliminates scroll & typing lag) */
@@ -57,7 +75,7 @@
 
     .glass-input {
       background: var(--input-bg);
-      border: 1px solid rgba(148, 163, 184, 0.32);
+      border: 1px solid rgba(148, 163, 184, 0.34);
       transition: border-color 0.15s ease, box-shadow 0.15s ease;
     }
 
@@ -83,10 +101,14 @@
       body * {
         visibility: hidden;
       }
-      body {
+      body, #systemWallpaperLayer {
         background: #ffffff !important;
+        background-image: none !important;
         margin: 0 !important;
         padding: 0 !important;
+      }
+      #systemWallpaperLayer::after {
+        display: none !important;
       }
       .active-print-modal, .active-print-modal * {
         visibility: visible;
@@ -116,10 +138,13 @@
 </head>
 <body class="text-slate-800 dark:text-slate-100 antialiased selection:bg-sky-500 selection:text-white">
 
+  <!-- Shared Background Wallpaper Layer -->
+  <div id="systemWallpaperLayer" aria-hidden="true"></div>
+
   <div id="toastContainer" class="fixed top-5 right-5 z-[60] flex flex-col gap-2 pointer-events-none"></div>
 
   <!-- LOGIN SCREEN -->
-  <div id="loginOverlay" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/60">
+  <div id="loginOverlay" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
     <div class="w-full max-w-md glass-panel rounded-3xl p-6 sm:p-8 space-y-6 relative overflow-hidden">
       <div class="flex items-center justify-between gap-3">
         <div class="flex items-center gap-3 min-w-0">
