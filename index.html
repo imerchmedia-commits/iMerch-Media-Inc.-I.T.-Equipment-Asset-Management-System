@@ -848,6 +848,7 @@ function doPost(e) {
     const STORAGE_KEY_ASSETS = 'imerch_it_assets_v1';
     const STORAGE_KEY_SCRIPT_URL = 'imerch_apps_script_url';
     const STORAGE_KEY_THEME = 'imerch_theme_mode';
+    const DEFAULT_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxSIug8essB5fGFos16RSr0-UaxqlrbRFk3PK4P5InC1Oe-zh9gBhZhrhdkmwKdUBEUjA/exec';
 
     // Default Pre-loaded Sample Records (Starting at IM-0001)
     const INITIAL_SAMPLE_ASSETS = [
@@ -949,16 +950,16 @@ function doPost(e) {
       }
     }
 
-    function toggleTheme() {
-      const isDark = document.documentElement.classList.toggle('dark');
-      localStorage.setItem(STORAGE_KEY_THEME, isDark ? 'dark' : 'light');
+    function getActiveScriptUrl() {
+      const customUrl = localStorage.getItem(STORAGE_KEY_SCRIPT_URL);
+      return customUrl !== null ? customUrl.trim() : DEFAULT_SCRIPT_URL;
     }
 
     // =========================================================================
     // DATA LOADING & GOOGLE SHEETS SYNC
     // =========================================================================
     async function loadAssets() {
-      const scriptUrl = localStorage.getItem(STORAGE_KEY_SCRIPT_URL);
+      const scriptUrl = getActiveScriptUrl();
       const localStored = localStorage.getItem(STORAGE_KEY_ASSETS);
 
       if (localStored) {
@@ -979,16 +980,16 @@ function doPost(e) {
         try {
           const res = await fetch(scriptUrl);
           const json = await res.json();
-          if (json.status === 'success' && Array.isArray(json.data) && json.data.length > 0) {
+          if (json.status === 'success' && Array.isArray(json.data)) {
             assets = json.data.map(row => ({
-              assetId: row['Asset ID'] || row.assetId,
-              employeeName: row['Employee Name'] || row.employeeName,
+              assetId: row['Asset ID'] || row.assetId || getNextSequentialAssetId(),
+              employeeName: row['Employee Name'] || row.employeeName || 'Unassigned',
               department: row['Department'] || row.department || 'Operations',
               category: row['Category'] || row.category || 'Laptop',
-              itemDetails: row['Item Details'] || row.itemDetails,
+              itemDetails: row['Item Details'] || row.itemDetails || '',
               datePurchased: formatDateISO(row['Date Purchased'] || row.datePurchased),
               price: parseFloat(row['Price'] || row.price || 0),
-              dateReceived: formatDateISO(row['Date Received'] || row.dateReceived),
+              dateReceived: formatDateISO(row['Date Received'] || row['Date Released'] || row.dateReceived || row.dateReleased),
               status: row['Status'] || row.status || 'Assigned',
               arFileName: row['AR File Link'] && row['AR File Link'] !== 'No Attachment' ? 'View Drive AR' : '',
               arFileUrl: row['AR File Link'] || '',
@@ -996,7 +997,7 @@ function doPost(e) {
             }));
             saveAssetsLocal();
             refreshAllViews();
-            showToast('Synced live records from Google Sheets!', 'success');
+            showToast('Connected live to Google Sheets database!', 'success');
           }
         } catch (err) {
           console.error('Google Sheets sync error:', err);
@@ -1166,7 +1167,7 @@ function doPost(e) {
       submitBtn.innerHTML = `<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path></svg> Processing...`;
 
       const finalizeRecord = async (base64Data = null, fileName = null) => {
-        const scriptUrl = localStorage.getItem(STORAGE_KEY_SCRIPT_URL);
+        const scriptUrl = getActiveScriptUrl();
         let uploadedUrl = fileName ? '#local-preview' : '';
 
         // Sync to Google Apps Script + Google Drive if configured
@@ -1542,7 +1543,7 @@ function doPost(e) {
     // CONFIGURATION & APPS SCRIPT MODALS
     // =========================================================================
     function openConfigModal() {
-      document.getElementById('scriptUrlInput').value = localStorage.getItem(STORAGE_KEY_SCRIPT_URL) || '';
+      document.getElementById('scriptUrlInput').value = getActiveScriptUrl();
       document.getElementById('configModal').classList.remove('hidden');
     }
 
@@ -1552,11 +1553,10 @@ function doPost(e) {
 
     function saveScriptUrl() {
       const url = document.getElementById('scriptUrlInput').value.trim();
+      localStorage.setItem(STORAGE_KEY_SCRIPT_URL, url);
       if (url) {
-        localStorage.setItem(STORAGE_KEY_SCRIPT_URL, url);
         showToast('Google Apps Script URL saved! Syncing...', 'success');
       } else {
-        localStorage.removeItem(STORAGE_KEY_SCRIPT_URL);
         showToast('Switched to Local Demo Mode.', 'info');
       }
       updateSyncBadge();
@@ -1565,12 +1565,12 @@ function doPost(e) {
     }
 
     function updateSyncBadge() {
-      const url = localStorage.getItem(STORAGE_KEY_SCRIPT_URL);
+      const url = getActiveScriptUrl();
       const dot = document.getElementById('syncDot');
       const label = document.getElementById('syncLabel');
       if (url) {
         dot.className = 'w-2 h-2 rounded-full bg-emerald-400';
-        label.textContent = 'Google Sheets Connected';
+        label.textContent = 'Google Sheets Live';
       } else {
         dot.className = 'w-2 h-2 rounded-full bg-amber-400 animate-pulse';
         label.textContent = 'Local Demo Mode';
